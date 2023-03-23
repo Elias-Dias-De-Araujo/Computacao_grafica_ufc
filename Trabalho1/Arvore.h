@@ -15,7 +15,7 @@ public:
             bool sel, bool cl
             );
     void criar();
-    void desenhar_objeto();
+    void desenha();
 };
 
 #endif // ARVORE_H

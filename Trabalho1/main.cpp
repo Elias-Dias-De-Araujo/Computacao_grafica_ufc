@@ -22,9 +22,9 @@ Model3DS carro = Model3DS("../3ds/cartest.3DS");
 
 
 // Configuração inicial( colocar if posteriormente quando tiver arquivo )
-Arvore *arvore = new Arvore(0,0,0,0,0,0,1,1,1,false,false);
-Mesa *mesa = new Mesa(0,0,0,0,0,0,1,1,1,false,false);
-Tenda *tenda = new Tenda(0,0,0,0,0,0,1,1,1,false,false);
+Arvore *arvore = new Arvore(2,0,-3,0,0,0,1,1,1,false,false);
+Mesa *mesa = new Mesa(-2,0,3,0,0,0,1,1,1,false,false);
+Tenda *tenda = new Tenda(3,0,4,0,0,0,1,1,1,false,false);
 
 vector<Objeto*> objetos;
 
@@ -143,12 +143,9 @@ void Aplicar_transformações() {
         objetos[index_selecionado]->rot_z += glutGUI::daz;
 
     }
-
 }
 
-void desenha() {
-    GUI::displayInit();
-
+void displayInner() {
     GUI::setLight(0,  3,5,4, true,false);//(tecla de apagar, x,y,z , desligar e ligar luz, (false = forte, true = atenuada))
 
     //GUI::drawOrigin(0.5);//(pontos em caxa eixo)
@@ -160,21 +157,17 @@ void desenha() {
     //GUI::setColor(0,1,0, 1,true);
     //GUI::drawBox(0+desl.x,0+desl.y,0+desl.z, 1+desl.x,1+desl.y,1+desl.z);//(x0,y0,z0, xf,yf,zf)
 
-    // Configuração inicial( colocar if posteriormente quando tiver arquivo )
-    glPushMatrix();
-        glTranslatef(3,0,4);
-        tenda->desenhar_objeto();
-    glPopMatrix();
+    for (int i = 0; i < objetos.size(); ++i) {
+        glPushMatrix();
+            objetos[i]->desenha();
+        glPopMatrix();
+    }
+}
 
-    glPushMatrix();
-        glTranslatef(2,0,-3);
-        arvore->desenhar_objeto();
-    glPopMatrix();
+void desenha() {
+    GUI::displayInit();
 
-    glPushMatrix();
-        glTranslatef(-2,0,3);
-        mesa->desenhar_objeto();
-    glPopMatrix();
+    displayInner();
 
     Aplicar_transformações();
 
@@ -200,14 +193,45 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         desl.y -= 0.01;
         break;
     case 'a':
-        /*
         arvore_aux = new Arvore(0,0,0,0,0,0,1,1,1,false,false);
-        arvore_aux->desenhar_objeto();
         objetos.push_back(arvore_aux);
-        */
         break;
     case 'd':
-        desl.x += 0.01;
+        if(selecao_iniciada) {
+            objetos.erase(objetos.begin() + index_selecionado);
+            index_selecionado--;
+            if(index_selecionado == -1){
+                index_selecionado = objetos.size() - 1;
+            }
+            if(objetos.size() == 0) {
+                index_selecionado = 0;
+                selecao_iniciada = false;
+            }
+
+            if(selecao_iniciada) { // verifica se o vector ainda possui valores, se possuir seta o selecionado do outro objeto do vector
+                objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
+            }
+        }
+        break;
+    case 'D':
+        if(selecao_iniciada) {
+            if(index_selecionado == objetos.size() -1){
+                index_selecionado--;
+            }
+
+            objetos.erase(objetos.begin() + (objetos.size() - 1));
+
+            if(objetos.size() == 0) {
+                index_selecionado = 0;
+                selecao_iniciada = false;
+            }
+
+            if(selecao_iniciada) { // verifica se o vector ainda possui valores, se possuir seta o selecionado do outro objeto do vector
+                objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
+            }
+
+        }
+
         break;
     case 'O':
         selecao_iniciada = !selecao_iniciada;

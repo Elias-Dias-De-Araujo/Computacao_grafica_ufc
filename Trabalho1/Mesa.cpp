@@ -138,9 +138,9 @@ void Mesa::criar(){
     glEnd();
 }
 
-void Mesa::desenhar_objeto(){
+void Mesa::desenha(){
     glPushMatrix();
-        Objeto::desenha_transformacoes(); // T.Rz.Ry.Rx.S. p
+        Objeto::desenha(); // T.Rz.Ry.Rx.S. p
         criar();
     glPopMatrix();
 

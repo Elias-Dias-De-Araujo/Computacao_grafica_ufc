@@ -11,7 +11,7 @@ public:
     float esca_x, esca_y, esca_z;
     bool selecionado;
     bool cord_local;
-    virtual void desenha_transformacoes();
+    virtual void desenha();
 };
 
 

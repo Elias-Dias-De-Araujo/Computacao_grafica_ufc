@@ -4,7 +4,7 @@
 using namespace std;
 
 
-void Objeto::desenha_transformacoes() {
+void Objeto::desenha() {
     // T.Rz.Ry.Rx.S (correspondente ao T'' da Q1 da lista 1)
     glTranslatef(trans_x,trans_y,trans_z); //transformacao (matriz) mais a esquerda (mais global)
     glRotatef(rot_x,0,0,1);  // \ .

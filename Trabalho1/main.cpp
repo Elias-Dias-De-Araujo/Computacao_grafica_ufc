@@ -1,17 +1,15 @@
 ﻿#include <iostream>
+#include <fstream>
 #include <vector>
+#include <gui.h>
+#include <string>
+#include <sstream>
 #include "Objeto.h"
 #include "Arvore.cpp"
 #include "Mesa.cpp"
 #include "Tenda.cpp"
 
 using namespace std;
-
-#include <gui.h>
-
-Arvore *arvore_aux;
-Mesa *mesa_aux;
-Tenda *tenda_aux;
 
 int index_selecionado = 0;
 bool selecao_iniciada = false;
@@ -21,127 +19,96 @@ Vetor3D rot(0,0,0);
 Model3DS carro = Model3DS("../3ds/cartest.3DS");
 
 
-// Configuração inicial( colocar if posteriormente quando tiver arquivo )
-Arvore *arvore = new Arvore(2,0,-3,0,0,0,1,1,1,false,false);
-Mesa *mesa = new Mesa(-2,0,3,0,0,0,1,1,1,false,false);
-Tenda *tenda = new Tenda(3,0,4,0,0,0,1,1,1,false,false);
-
 vector<Objeto*> objetos;
 
 
 //Sentido apontando para mim Anti-horário, para ângulos é a mesma coisa
 //redefinir escalas, rotações e translações sempre de baixo para cima a partir do código
 
-//void Quadrado_rosa()
-//{
-//    // Face Frente
-//    glBegin(GL_POLYGON);
-//        glNormal3f(0,0,1);
-//        //Versão anti-horária
-//        glVertex3f(0,0,0);
-//        glVertex3f(1,0,0);
-//        glVertex3f(1,1,0);
-//        glVertex3f(0,1,0);
-
-// //        Versão horária
-// //        glVertex3f(0,0,0);
-// //        glVertex3f(0,1,0);
-// //        glVertex3f(1,1,0);
-// //        glVertex3f(1,0,0);
-//    glEnd();
-
-//    // Face Atrás
-//    glBegin(GL_POLYGON);
-//        glNormal3f(0,0,-1);
-//        glVertex3f(0,0,-1);
-//        glVertex3f(0,1,-1);
-//        glVertex3f(1,1,-1);
-//        glVertex3f(1,0,-1);
-//    glEnd();
-
-//    // Face Esquerda
-//    glBegin(GL_POLYGON);
-//        glNormal3f(-1,0,0);
-//        glVertex3f(0,0,0);
-//        glVertex3f(0,1,0);
-//        glVertex3f(0,1,-1);
-//        glVertex3f(0,0,-1);
-//    glEnd();
-
-//    // Face Direita
-//    glBegin(GL_POLYGON);
-//        glNormal3f(1,0,0);
-//        glVertex3f(1,0,0);
-//        glVertex3f(1,0,-1);
-//        glVertex3f(1,1,-1);
-//        glVertex3f(1,1,0);
-//    glEnd();
-
-//    // Face Cima
-//    glBegin(GL_POLYGON);
-//        glNormal3f(0,1,0);
-//        glVertex3f(0,1,0);
-//        glVertex3f(1,1,0);
-//        glVertex3f(1,1,-1);
-//        glVertex3f(0,1,-1);
-//    glEnd();
-
-//    // Face Baixo
-//    glBegin(GL_POLYGON);
-//        glNormal3f(0,-1,0);
-//        glVertex3f(1,0,0);
-//        glVertex3f(0,0,0);
-//        glVertex3f(0,0,-1);
-//        glVertex3f(1,0,-1);
-//    glEnd();
-//}
-
-//void Tenda() {
-
-//}
-
-void Escorregador(){
-    GUI::setColor(1,1,0, 1,true);
-
-    //face Direita Frente(Escada)
-    glBegin(GL_POLYGON);
-        glNormal3f(0,0,1);
-        glVertex3f(-0.5,0,-0.5);
-        glVertex3f(-0.25,0,-0.5);
-        glVertex3f(-0.25,0.5,-0.5);
-        glVertex3f(-0.5,0.5,-0.5);
-    glEnd();
-
-    //face Direita Trás(Escada)
-    glBegin(GL_POLYGON);
-        glNormal3f(0,0,1);
-        glVertex3f(-0.5,0,-0.5);
-        glVertex3f(-0.25,0,-0.5);
-        glVertex3f(-0.25,0.5,-0.5);
-        glVertex3f(-0.5,0.5,-0.5);
-    glEnd();
+void atualizar_arquivo()
+{
+    ofstream arquivo;
+    arquivo.open("arquivo_save.txt");
+    for (int i = 0; i < objetos.size(); ++i) {
+        arquivo << objetos[i]->identifier << " " << objetos[i]->trans_x << " " << objetos[i]->trans_y << " " << objetos[i]->trans_z << " " <<
+                   objetos[i]->rot_x << " " << objetos[i]->rot_y << " " << objetos[i]->rot_z << " " <<
+                   objetos[i]->esca_x << " " << objetos[i]->esca_y << " " << objetos[i]->esca_z << " " <<
+                   0 << " " << 0 <<"\n";
+    }
+    arquivo.close();
 }
 
-//void Arvore(){
+void ler_arquivo()
+{
+    ifstream arquivo;
+    arquivo.open("arquivo_save.txt");
+    string linha;
+    vector<float> dados_linha;
+    char identificador_switch[10];
+    if(arquivo.is_open()){
+        while(getline(arquivo, linha)){
+            // stream a partir da string para facilitar a conversão
+            std::stringstream ss(linha);
 
-//}
+            double n;
+            // Percorre o stream e adiciona cada número ao vetor
+            while (ss >> n) {
+                dados_linha.push_back(n);
+            }
 
-//void Mesa() {
+            // print de dados de cada objeto no terminal ( os mesmos valores do arquivo )
+            for(int i = 0;i< dados_linha.size(); i++){
+                cout << dados_linha[i] << " ";
+            }
+            cout << "\n";
 
-
-//}
+            sprintf(identificador_switch, "%f", dados_linha[0]);
+            switch(identificador_switch[0]) {
+                case '1':
+                    objetos.push_back(new Arvore(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                            ,dados_linha[7],dados_linha[8],dados_linha[9],
+                            (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
+                case '2':
+                objetos.push_back(new Mesa(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
+                case '3':
+                objetos.push_back(new Tenda(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
+                default:
+                    break;
+            }
+            dados_linha.clear();
+        }
+        arquivo.close();
+    }else {
+        objetos.push_back(new Arvore(1,2,0,-3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Mesa(2,-2,0,3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Tenda(3,3,0,4,0,0,0,1,1,1,false,false));
+    }
+}
 
 void Aplicar_transformações() {
     // Aplicando transformações no objeto selecionado
     if(selecao_iniciada) {
+        // Translações
         objetos[index_selecionado]->trans_x += glutGUI::dtx;
         objetos[index_selecionado]->trans_y += glutGUI::dty;
         objetos[index_selecionado]->trans_z += glutGUI::dtz;
 
+        // Rotações
         objetos[index_selecionado]->rot_x += glutGUI::dax;
         objetos[index_selecionado]->rot_y += glutGUI::day;
         objetos[index_selecionado]->rot_z += glutGUI::daz;
 
+        // Escalas
+        objetos[index_selecionado]->esca_x += glutGUI::dsx;
+        objetos[index_selecionado]->esca_y += glutGUI::dsy;
+        objetos[index_selecionado]->esca_z += glutGUI::dsz;
     }
 }
 
@@ -172,6 +139,8 @@ void desenha() {
     Aplicar_transformações();
 
     GUI::displayEnd();
+
+    atualizar_arquivo();
 }
 
 
@@ -186,15 +155,14 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
     case 'l':
         glutGUI::trans_luz = !glutGUI::trans_luz;
         break;
-    case 'w':
-        desl.y += 0.01;
+    case '1':
+        objetos.push_back(new Arvore(1,0,0,0,0,0,0,1,1,1,false,false));
         break;
-    case 's':
-        desl.y -= 0.01;
+    case '2':
+        objetos.push_back(new Mesa(2,0,0,0,0,0,0,1,1,1,false,false));
         break;
-    case 'a':
-        arvore_aux = new Arvore(0,0,0,0,0,0,1,1,1,false,false);
-        objetos.push_back(arvore_aux);
+    case '3':
+        objetos.push_back(new Tenda(3,0,0,0,0,0,0,1,1,1,false,false));
         break;
     case 'd':
         if(selecao_iniciada) {
@@ -268,42 +236,11 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
 
 }
 
+
 int main()
 {
-    objetos.push_back(arvore);
-    objetos.push_back(mesa);
-    objetos.push_back(tenda);
-
+    ler_arquivo();
 
     //GUI gui(800,600); // (largura, altura)
     GUI gui = GUI(800,600,desenha,teclado);
 }
-
-//inicializando OpenGL
-//while(true) {
-//    desenha();
-//    interacaoUsuario();
-//    //if () {
-//    //    break;
-//    //}
-//}
-
-//adicionar:
-//-deslocar cubo com o teclado
-//-deslocar cubo com o mouse
-//-primitivas OpenGL (glBegin, glEnd)
-//-glNormal, iluminação
-
-//-leitor 3DS
-//-usar as transformacoes matriciais do proprio OpenGL
-//-push/popMatrix (podem ser usados um dentro do outro - nocao de pilha)
-
-//-ordem das transformacoes
-//  -translacao e rotacao
-//  -testar escala!!!
-//-interpretacao de uma composicao de transformacoes já definida
-//      <----------- globais
-//  -   T.Rz.Ry.Rx.S . v
-//      -----------> locais
-//  -direita->esquerda: Transfs globais
-//  -esquerda->direita: Transfs locais

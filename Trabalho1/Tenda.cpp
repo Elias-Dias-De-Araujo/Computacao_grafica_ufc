@@ -3,22 +3,13 @@
 
 using namespace std;
 
-Tenda::Tenda(float t_x, float t_y, float t_z,
+Tenda::Tenda(int ident, float t_x, float t_y, float t_z,
                float r_x, float r_y, float r_z,
                float e_x, float e_y, float e_z,
-               bool sel, bool cl){
-    trans_x = t_x;
-    trans_y = t_y;
-    trans_z = t_z;
-    rot_x = r_x;
-    rot_y = r_y;
-    rot_z = r_z;
-    esca_x = e_x;
-    esca_y = e_y;
-    esca_z = e_z;
-    selecionado = sel;
-    cord_local = cl;
-
+               bool sel, bool cl) : Objeto(ident, t_x,  t_y,  t_z,
+                                                      r_x,  r_y,  r_z,
+                                                      e_x,  e_y,  e_z,
+                                                      sel,  cl){
 }
 
 void Tenda::criar(){

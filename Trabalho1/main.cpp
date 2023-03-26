@@ -62,6 +62,7 @@ void ler_arquivo()
             }
             cout << "\n";
 
+            // Convertendo identificador float para char
             sprintf(identificador_switch, "%f", dados_linha[0]);
             switch(identificador_switch[0]) {
                 case '1':
@@ -134,6 +135,11 @@ void displayInner() {
 void desenha() {
     GUI::displayInit();
 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    gluLookAt(glutGUI::cam->e.x,glutGUI::cam->e.y,glutGUI::cam->e.z, glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z, glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
+
     displayInner();
 
     Aplicar_transformações();
@@ -163,6 +169,72 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case '3':
         objetos.push_back(new Tenda(3,0,0,0,0,0,0,1,1,1,false,false));
+        break;
+    case '6':
+        glutGUI::cam->e.x = 0;
+        glutGUI::cam->e.y = 15;
+        glutGUI::cam->e.z = 0;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 1;
+        glutGUI::cam->u.y = 0;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '7':
+        glutGUI::cam->e.x = -10;
+        glutGUI::cam->e.y = 2;
+        glutGUI::cam->e.z = 10;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '8':
+        glutGUI::cam->e.x = 10;
+        glutGUI::cam->e.y = 2;
+        glutGUI::cam->e.z = 10;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '9':
+        glutGUI::cam->e.x = 10;
+        glutGUI::cam->e.y = 2;
+        glutGUI::cam->e.z = -10;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '-':
+        glutGUI::cam->e.x = -10;
+        glutGUI::cam->e.y = 2;
+        glutGUI::cam->e.z = -10;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '=':
+        glutGUI::cam->e.x = 0;
+        glutGUI::cam->e.y = 1;
+        glutGUI::cam->e.z = -10;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 1;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
         break;
     case 'd':
         if(selecao_iniciada) {
@@ -240,7 +312,6 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
 int main()
 {
     ler_arquivo();
-
     //GUI gui(800,600); // (largura, altura)
     GUI gui = GUI(800,600,desenha,teclado);
 }

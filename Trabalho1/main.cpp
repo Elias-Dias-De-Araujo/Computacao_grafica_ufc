@@ -1,23 +1,30 @@
-﻿#include <iostream>
+#include <iostream>
+
+using namespace std;
+
+#include <gui.h>
+#include <vector>
+
+//#include <objeto.h>
 #include <fstream>
 #include <vector>
 #include <gui.h>
 #include <string>
 #include <sstream>
-#include "Objeto.h"
-#include "Arvore.cpp"
-#include "Mesa.cpp"
-#include "Tenda.cpp"
+#include "objeto.h"
+#include "arvore.h"
+#include "mesa.h"
+#include "tenda.h"
+#include "banco.h"
+#include "gangorra.h"
 
-using namespace std;
+//Model3DS model3ds("../3ds/cartest.3DS");
 
 int index_selecionado = 0;
 bool selecao_iniciada = false;
 
 Vetor3D desl(0,0,0);//vetor de deslocamento tridimensional (x,y,z)
 Vetor3D rot(0,0,0);
-Model3DS carro = Model3DS("../3ds/cartest.3DS");
-
 
 vector<Objeto*> objetos;
 
@@ -80,6 +87,16 @@ void ler_arquivo()
                         ,dados_linha[7],dados_linha[8],dados_linha[9],
                         (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
                     break;
+                case '4':
+                objetos.push_back(new Banco(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    ,dados_linha[7],dados_linha[8],dados_linha[9],
+                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                break;
+                case '5':
+                objetos.push_back(new Gangorra(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    ,dados_linha[7],dados_linha[8],dados_linha[9],
+                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                break;
                 default:
                     break;
             }
@@ -87,9 +104,30 @@ void ler_arquivo()
         }
         arquivo.close();
     }else {
-        objetos.push_back(new Arvore(1,2,0,-3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Arvore(1,4,0,-3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Arvore(1,1,0,-3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Arvore(1,-2.50,0,-3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Arvore(1,-4,0,-3,0,0,0,1,1,1,false,false));
+
+        // mesa centro
         objetos.push_back(new Mesa(2,-2,0,3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Tenda(3,3,0,4,0,0,0,1,1,1,false,false));
+        // mesa direita
+        objetos.push_back(new Mesa(2,-1,0,3,0,0,0,0.5,0.5,0.5,false,false));
+        // mesa esquerda
+        objetos.push_back(new Mesa(2,-2.90,0,3,0,0,0,0.5,0.5,0.5,false,false));
+        // mesa frente
+        objetos.push_back(new Mesa(2,-2,0,2,0,0,0,0.5,0.5,0.5,false,false));
+        // mesa trás
+        objetos.push_back(new Mesa(2,-2,0,4,0,0,0,0.5,0.5,0.5,false,false));
+
+        // Tenda quadrante inferior direito
+        objetos.push_back(new Tenda(3,3,0,3,0,0,0,2,1,2,false,false));
+
+        // Bancos
+        objetos.push_back(new Banco(4,-3,0,-1,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Banco(4,-3,0,1,0,180,0,1,1,1,false,false));
+
+        objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
     }
 }
 
@@ -116,7 +154,7 @@ void Aplicar_transformações() {
 void displayInner() {
     GUI::setLight(0,  3,5,4, true,false);//(tecla de apagar, x,y,z , desligar e ligar luz, (false = forte, true = atenuada))
 
-    //GUI::drawOrigin(0.5);//(pontos em caxa eixo)
+    //GUI::drawOrigin(1);//(pontos em caxa eixo)
     GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
     GUI::setColor(0.0118,0.7333,0.5216, 1,true);//(red,green,blue,opacidade,componente_de_reflexão)
     GUI::drawFloor(10,10,0.5,0.5);//(largura, comprimento, vertices largura, vertices comprimento)
@@ -169,6 +207,12 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case '3':
         objetos.push_back(new Tenda(3,0,0,0,0,0,0,1,1,1,false,false));
+        break;
+    case '4':
+        objetos.push_back(new Banco(4,0,0,0,0,0,0,1,1,1,false,false));
+        break;
+    case '5':
+        objetos.push_back(new Gangorra(5,0,0,0,0,0,0,1,1,1,false,false));
         break;
     case '6':
         glutGUI::cam->e.x = 0;

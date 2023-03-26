@@ -1,4 +1,0 @@
-chão = setColor(0,0.7137,0.2235, 1,true);
-tronco = setColor(0.5882,0.2941,0, 1,true);
-Folhagem = setColor(0,0.7137,0.2235, 1,true);
-Chão(alternativa) = setColor(0.0118,0.7333,0.5216, 1,true);

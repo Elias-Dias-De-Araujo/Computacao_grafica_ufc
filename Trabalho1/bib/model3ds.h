@@ -48,8 +48,6 @@ public:
     Model3DS(const char *name);
     ~Model3DS();
 
-    //colorido significa usar as cores definidas no arquivo
-    //se false, a cor definida pelo setColor é que será usada
     void draw(bool colorido = true);
 };
 

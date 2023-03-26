@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_QML_DEBUG
 CFLAGS        = -pipe -g -Wall -Wextra -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -fPIC $(DEFINES)
-INCPATH       = -I../../Trabalho1 -I. -I../bib -I../gui_glut -Itrab1 -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+INCPATH       = -I../../Trabalho1 -I. -I../bib -I../gui_glut -I../pessoal -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -53,7 +53,6 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../main.cpp \
-		../Objeto.cpp \
 		../bib/Camera.cpp \
 		../bib/CameraDistante.cpp \
 		../bib/CameraJogo.cpp \
@@ -61,9 +60,14 @@ SOURCES       = ../main.cpp \
 		../bib/model3ds.cpp \
 		../bib/Vetor3D.cpp \
 		../gui_glut/extra.cpp \
-		../gui_glut/gui.cpp 
+		../gui_glut/gui.cpp \
+		../pessoal/arvore.cpp \
+		../pessoal/banco.cpp \
+		../pessoal/gangorra.cpp \
+		../pessoal/mesa.cpp \
+		../pessoal/objeto.cpp \
+		../pessoal/tenda.cpp 
 OBJECTS       = main.o \
-		Objeto.o \
 		Camera.o \
 		CameraDistante.o \
 		CameraJogo.o \
@@ -71,7 +75,13 @@ OBJECTS       = main.o \
 		model3ds.o \
 		Vetor3D.o \
 		extra.o \
-		gui.o
+		gui.o \
+		arvore.o \
+		banco.o \
+		gangorra.o \
+		mesa.o \
+		objeto.o \
+		tenda.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -142,19 +152,20 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../../Trabalho1.pro Arvore.h \
-		Mesa.h \
-		Objeto.h \
-		Tenda.h \
-		bib/Camera.h \
+		../../Trabalho1.pro bib/Camera.h \
 		bib/CameraDistante.h \
 		bib/CameraJogo.h \
 		bib/Desenha.h \
 		bib/model3ds.h \
 		bib/Vetor3D.h \
 		gui_glut/extra.h \
-		gui_glut/gui.h ../main.cpp \
-		../Objeto.cpp \
+		gui_glut/gui.h \
+		pessoal/arvore.h \
+		pessoal/banco.h \
+		pessoal/gangorra.h \
+		pessoal/mesa.h \
+		pessoal/objeto.h \
+		pessoal/tenda.h ../main.cpp \
 		../bib/Camera.cpp \
 		../bib/CameraDistante.cpp \
 		../bib/CameraJogo.cpp \
@@ -162,7 +173,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../bib/model3ds.cpp \
 		../bib/Vetor3D.cpp \
 		../gui_glut/extra.cpp \
-		../gui_glut/gui.cpp
+		../gui_glut/gui.cpp \
+		../pessoal/arvore.cpp \
+		../pessoal/banco.cpp \
+		../pessoal/gangorra.cpp \
+		../pessoal/mesa.cpp \
+		../pessoal/objeto.cpp \
+		../pessoal/tenda.cpp
 QMAKE_TARGET  = Trabalho1
 DESTDIR       = 
 TARGET        = Trabalho1
@@ -360,8 +377,7 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../main.cpp ../Objeto.h \
-		../gui_glut/gui.h \
+main.o: ../main.cpp ../gui_glut/gui.h \
 		../gui_glut/extra.h \
 		../bib/CameraDistante.h \
 		../bib/Camera.h \
@@ -369,24 +385,13 @@ main.o: ../main.cpp ../Objeto.h \
 		../bib/CameraJogo.h \
 		../bib/Desenha.h \
 		../bib/model3ds.h \
-		../Arvore.cpp \
-		../Arvore.h \
-		../Mesa.cpp \
-		../Mesa.h \
-		../Tenda.cpp \
-		../Tenda.h
+		../pessoal/objeto.h \
+		../pessoal/arvore.h \
+		../pessoal/mesa.h \
+		../pessoal/tenda.h \
+		../pessoal/banco.h \
+		../pessoal/gangorra.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
-
-Objeto.o: ../Objeto.cpp ../Objeto.h \
-		../gui_glut/gui.h \
-		../gui_glut/extra.h \
-		../bib/CameraDistante.h \
-		../bib/Camera.h \
-		../bib/Vetor3D.h \
-		../bib/CameraJogo.h \
-		../bib/Desenha.h \
-		../bib/model3ds.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Objeto.o ../Objeto.cpp
 
 Camera.o: ../bib/Camera.cpp ../bib/Camera.h \
 		../bib/Vetor3D.h
@@ -429,6 +434,77 @@ gui.o: ../gui_glut/gui.cpp ../gui_glut/gui.h \
 		../bib/Desenha.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gui.o ../gui_glut/gui.cpp
+
+arvore.o: ../pessoal/arvore.cpp ../pessoal/arvore.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o arvore.o ../pessoal/arvore.cpp
+
+banco.o: ../pessoal/banco.cpp ../pessoal/banco.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o banco.o ../pessoal/banco.cpp
+
+gangorra.o: ../pessoal/gangorra.cpp ../pessoal/gangorra.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gangorra.o ../pessoal/gangorra.cpp
+
+mesa.o: ../pessoal/mesa.cpp ../pessoal/mesa.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mesa.o ../pessoal/mesa.cpp
+
+objeto.o: ../pessoal/objeto.cpp ../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o objeto.o ../pessoal/objeto.cpp
+
+tenda.o: ../pessoal/tenda.cpp ../pessoal/tenda.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tenda.o ../pessoal/tenda.cpp
 
 ####### Install
 

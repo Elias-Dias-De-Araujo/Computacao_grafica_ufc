@@ -1,9 +1,7 @@
 #ifndef TENDA_H
 #define TENDA_H
 
-#include <Objeto.h>
-
-using namespace std;
+#include <objeto.h>
 
 class Tenda : public Objeto
 {
@@ -17,6 +15,5 @@ public:
     void criar();
     void desenha();
 };
-
 
 #endif // TENDA_H

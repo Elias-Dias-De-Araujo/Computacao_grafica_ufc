@@ -1,21 +1,19 @@
-#ifndef ARVORE_H
-#define ARVORE_H
+#ifndef BANCO_H
+#define BANCO_H
 
-#include <Objeto.h>
+#include <objeto.h>
 
-using namespace std;
-
-class Arvore : public Objeto
+class Banco : public Objeto
 {
 public:
-    Arvore(
+    Model3DS* model;
+public:
+    Banco(
             int ident, float t_x, float t_y, float t_z,
             float r_x, float r_y, float r_z,
             float e_x, float e_y, float e_z,
             bool sel, bool cl
             );
-    void criar();
     void desenha();
 };
-
-#endif // ARVORE_H
+#endif // BANCO_H

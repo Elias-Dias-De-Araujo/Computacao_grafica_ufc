@@ -19,8 +19,11 @@ SOURCES += main.cpp \
     gui_glut/extra.cpp \
     gui_glut/gui.cpp \
     pessoal/arvore.cpp \
+    pessoal/balanco.cpp \
     pessoal/banco.cpp \
+    pessoal/escorregador.cpp \
     pessoal/gangorra.cpp \
+    pessoal/lixo.cpp \
     pessoal/mesa.cpp \
     pessoal/objeto.cpp \
     pessoal/tenda.cpp
@@ -35,8 +38,11 @@ HEADERS += \
     gui_glut/extra.h \
     gui_glut/gui.h \
     pessoal/arvore.h \
+    pessoal/balanco.h \
     pessoal/banco.h \
+    pessoal/escorregador.h \
     pessoal/gangorra.h \
+    pessoal/lixo.h \
     pessoal/mesa.h \
     pessoal/objeto.h \
     pessoal/tenda.h

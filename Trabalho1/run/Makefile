@@ -62,8 +62,11 @@ SOURCES       = ../main.cpp \
 		../gui_glut/extra.cpp \
 		../gui_glut/gui.cpp \
 		../pessoal/arvore.cpp \
+		../pessoal/balanco.cpp \
 		../pessoal/banco.cpp \
+		../pessoal/escorregador.cpp \
 		../pessoal/gangorra.cpp \
+		../pessoal/lixo.cpp \
 		../pessoal/mesa.cpp \
 		../pessoal/objeto.cpp \
 		../pessoal/tenda.cpp 
@@ -77,8 +80,11 @@ OBJECTS       = main.o \
 		extra.o \
 		gui.o \
 		arvore.o \
+		balanco.o \
 		banco.o \
+		escorregador.o \
 		gangorra.o \
+		lixo.o \
 		mesa.o \
 		objeto.o \
 		tenda.o
@@ -139,6 +145,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -161,8 +168,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		gui_glut/extra.h \
 		gui_glut/gui.h \
 		pessoal/arvore.h \
+		pessoal/balanco.h \
 		pessoal/banco.h \
+		pessoal/escorregador.h \
 		pessoal/gangorra.h \
+		pessoal/lixo.h \
 		pessoal/mesa.h \
 		pessoal/objeto.h \
 		pessoal/tenda.h ../main.cpp \
@@ -175,8 +185,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../gui_glut/extra.cpp \
 		../gui_glut/gui.cpp \
 		../pessoal/arvore.cpp \
+		../pessoal/balanco.cpp \
 		../pessoal/banco.cpp \
+		../pessoal/escorregador.cpp \
 		../pessoal/gangorra.cpp \
+		../pessoal/lixo.cpp \
 		../pessoal/mesa.cpp \
 		../pessoal/objeto.cpp \
 		../pessoal/tenda.cpp
@@ -248,6 +261,7 @@ Makefile: ../Trabalho1.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -320,6 +334,7 @@ Makefile: ../Trabalho1.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -390,7 +405,10 @@ main.o: ../main.cpp ../gui_glut/gui.h \
 		../pessoal/mesa.h \
 		../pessoal/tenda.h \
 		../pessoal/banco.h \
-		../pessoal/gangorra.h
+		../pessoal/gangorra.h \
+		../pessoal/balanco.h \
+		../pessoal/escorregador.h \
+		../pessoal/lixo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
 Camera.o: ../bib/Camera.cpp ../bib/Camera.h \
@@ -447,6 +465,18 @@ arvore.o: ../pessoal/arvore.cpp ../pessoal/arvore.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o arvore.o ../pessoal/arvore.cpp
 
+balanco.o: ../pessoal/balanco.cpp ../pessoal/balanco.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o balanco.o ../pessoal/balanco.cpp
+
 banco.o: ../pessoal/banco.cpp ../pessoal/banco.h \
 		../pessoal/objeto.h \
 		../gui_glut/gui.h \
@@ -459,6 +489,9 @@ banco.o: ../pessoal/banco.cpp ../pessoal/banco.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o banco.o ../pessoal/banco.cpp
 
+escorregador.o: ../pessoal/escorregador.cpp ../pessoal/escorregador.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o escorregador.o ../pessoal/escorregador.cpp
+
 gangorra.o: ../pessoal/gangorra.cpp ../pessoal/gangorra.h \
 		../pessoal/objeto.h \
 		../gui_glut/gui.h \
@@ -470,6 +503,9 @@ gangorra.o: ../pessoal/gangorra.cpp ../pessoal/gangorra.h \
 		../bib/Desenha.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gangorra.o ../pessoal/gangorra.cpp
+
+lixo.o: ../pessoal/lixo.cpp ../pessoal/lixo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lixo.o ../pessoal/lixo.cpp
 
 mesa.o: ../pessoal/mesa.cpp ../pessoal/mesa.h \
 		../pessoal/objeto.h \

@@ -17,6 +17,9 @@ using namespace std;
 #include "tenda.h"
 #include "banco.h"
 #include "gangorra.h"
+#include "balanco.h"
+#include "escorregador.h"
+#include "lixo.h"
 
 //Model3DS model3ds("../3ds/cartest.3DS");
 
@@ -63,11 +66,6 @@ void ler_arquivo()
                 dados_linha.push_back(n);
             }
 
-            // print de dados de cada objeto no terminal ( os mesmos valores do arquivo )
-            for(int i = 0;i< dados_linha.size(); i++){
-                cout << dados_linha[i] << " ";
-            }
-            cout << "\n";
 
             // Convertendo identificador float para char
             sprintf(identificador_switch, "%f", dados_linha[0]);
@@ -104,8 +102,7 @@ void ler_arquivo()
         }
         arquivo.close();
     }else {
-        objetos.push_back(new Arvore(1,4,0,-3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Arvore(1,1,0,-3,0,0,0,1,1,1,false,false));
+
         objetos.push_back(new Arvore(1,-2.50,0,-3,0,0,0,1,1,1,false,false));
         objetos.push_back(new Arvore(1,-4,0,-3,0,0,0,1,1,1,false,false));
 
@@ -128,6 +125,7 @@ void ler_arquivo()
         objetos.push_back(new Banco(4,-3,0,1,0,180,0,1,1,1,false,false));
 
         objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Balanco(6,2,0,-4,0,0,0,1,1,1,false,false));
     }
 }
 
@@ -184,7 +182,7 @@ void desenha() {
 
     GUI::displayEnd();
 
-    atualizar_arquivo();
+    //atualizar_arquivo();
 }
 
 
@@ -301,6 +299,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         if(selecao_iniciada) {
             if(index_selecionado == objetos.size() -1){
                 index_selecionado--;
+                objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
             }
 
             objetos.erase(objetos.begin() + (objetos.size() - 1));
@@ -308,10 +307,6 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
             if(objetos.size() == 0) {
                 index_selecionado = 0;
                 selecao_iniciada = false;
-            }
-
-            if(selecao_iniciada) { // verifica se o vector ainda possui valores, se possuir seta o selecionado do outro objeto do vector
-                objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
             }
 
         }

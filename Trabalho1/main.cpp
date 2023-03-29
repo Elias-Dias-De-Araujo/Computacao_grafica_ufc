@@ -123,7 +123,7 @@ void ler_arquivo()
     }
 }
 
-void Aplicar_transformações() {
+void Aplicar_transformacoes() {
     // Aplicando transformações no objeto selecionado
     if(selecao_iniciada) {
         // Translações
@@ -199,7 +199,7 @@ void desenha() {
 
     displayInner();
 
-    Aplicar_transformações();
+    Aplicar_transformacoes();
 
     GUI::displayEnd();
 

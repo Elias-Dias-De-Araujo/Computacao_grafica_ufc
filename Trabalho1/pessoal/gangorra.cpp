@@ -29,7 +29,7 @@ void Gangorra::desenha()
             GUI::drawOrigin(1);
         }
 
-        GUI::setColor(0.5,0.5,0.5);
+        GUI::setColor(0.8,0.66274,0.86666);
 
         if (selecionado) {
 
@@ -40,7 +40,7 @@ void Gangorra::desenha()
         glRotatef(-90,1,0,0);
         glScalef(1, 1, 1);
         glScalef(0.009, 0.009, 0.009);
-        model->draw(!selecionado); //se estiver selecionado, tem que desenhar o modelo 3ds
+        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
                                    //não colorido internamente para que a cor de destaque
                                    //da seleção tenha efeito
     glPopMatrix();

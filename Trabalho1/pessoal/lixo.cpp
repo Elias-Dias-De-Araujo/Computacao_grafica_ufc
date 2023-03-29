@@ -16,7 +16,7 @@ Lixo::Lixo(int ident, float t_x, float t_y, float t_z,
     esca_z = e_z;
     selecionado = sel;
     cord_local = cl;
-    model = new Model3DS("../3ds/trash.3DS");
+    model = new Model3DS("../3ds/trash.3ds");
 }
 
 
@@ -39,7 +39,7 @@ void Lixo::desenha()
         glTranslatef(0,0,0);
         glRotatef(-90,1,0,0);
         glScalef(1, 1, 1);
-        glScalef(0.0006, 0.0006, 0.0006);
+        glScalef(0.01, 0.01, 0.01);
         model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
                                    //não colorido internamente para que a cor de destaque
                                    //da seleção tenha efeito

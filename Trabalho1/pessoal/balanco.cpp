@@ -29,7 +29,7 @@ void Balanco::desenha()
             GUI::drawOrigin(1);
         }
 
-        GUI::setColor(0.5,0.5,0.5);
+        GUI::setColor(0.87058,0.72156,0.52941);
 
         if (selecionado) {
 
@@ -40,7 +40,7 @@ void Balanco::desenha()
         glRotatef(-90,1,0,0);
         glScalef(1, 1, 1);
         glScalef(0.0005, 0.0009, 0.0009);
-        model->draw(!selecionado); //se estiver selecionado, tem que desenhar o modelo 3ds
+        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
                                    //não colorido internamente para que a cor de destaque
                                    //da seleção tenha efeito
     glPopMatrix();

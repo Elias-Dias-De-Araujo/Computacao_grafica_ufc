@@ -29,7 +29,7 @@ void Escorregador::desenha()
             GUI::drawOrigin(1);
         }
 
-        GUI::setColor(0.5,0.5,0.5);
+        GUI::setColor(0.74117,0.92549,0.71372);
 
         if (selecionado) {
 
@@ -41,7 +41,7 @@ void Escorregador::desenha()
         glRotatef(-90,1,0,0);
         glScalef(1, 1, 1);
         glScalef(0.0005, 0.0005, 0.0005);
-        model->draw(!selecionado); //se estiver selecionado, tem que desenhar o modelo 3ds
+        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
                                    //não colorido internamente para que a cor de destaque
                                    //da seleção tenha efeito
     glPopMatrix();

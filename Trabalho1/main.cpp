@@ -95,6 +95,21 @@ void ler_arquivo()
                     ,dados_linha[7],dados_linha[8],dados_linha[9],
                     (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
                 break;
+                case '6':
+                objetos.push_back(new Balanco(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    ,dados_linha[7],dados_linha[8],dados_linha[9],
+                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                break;
+                case '7':
+                objetos.push_back(new Lixo(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    ,dados_linha[7],dados_linha[8],dados_linha[9],
+                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                break;
+                case '8':
+                objetos.push_back(new Escorregador(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    ,dados_linha[7],dados_linha[8],dados_linha[9],
+                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                break;
                 default:
                     break;
             }
@@ -125,8 +140,8 @@ void ler_arquivo()
         objetos.push_back(new Banco(4,-3,0,1,0,180,0,1,1,1,false,false));
 
         objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Balanco(6,2,0,-4,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Lixo(7,-1,0,-0.25,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Balanco(6,2,0,-3.5,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Lixo(7,-1,0,-1,0,0,0,1,1,1,false,false));
         objetos.push_back(new Escorregador(8,4,0,-4,0,0,0,1,1,1,false,false));
     }
 }
@@ -157,14 +172,32 @@ void displayInner() {
     //GUI::drawOrigin(1);//(pontos em caxa eixo)
     GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
     glPushMatrix();
-        GUI::setColor(0.76078,0.77254,0.8, 1,true);
-        // calçada
+        GUI::setColor(0.49803,0.50196,0.46274, 1,true);
+        // calçada horizontal
         glBegin(GL_POLYGON);
             glNormal3f(0,1,0);
             glVertex3f(-5,0,-0.5);
             glVertex3f(-5,0,0.5);
             glVertex3f(5,0,0.5);
             glVertex3f(5,0,-0.5);
+        glEnd();
+
+        // calçada vertical metade frente
+        glBegin(GL_POLYGON);
+            glNormal3f(0,1,0);
+            glVertex3f(-0.5,0,5);
+            glVertex3f(0.5,0,5);
+            glVertex3f(0.5,0,0.5);
+            glVertex3f(-0.5,0,0.5);
+        glEnd();
+
+        // calçada vertical metade trás
+        glBegin(GL_POLYGON);
+            glNormal3f(0,1,0);
+            glVertex3f(-0.5,0,-0.5);
+            glVertex3f(0.5,0,-0.5);
+            glVertex3f(0.5,0,-5);
+            glVertex3f(-0.5,0,-5);
         glEnd();
     glPopMatrix();
     GUI::setColor(0.0118,0.7333,0.5216, 1,true);//(red,green,blue,opacidade,componente_de_reflexão)
@@ -196,7 +229,7 @@ void desenha() {
 
     GUI::displayEnd();
 
-    //atualizar_arquivo();
+    atualizar_arquivo();
 }
 
 
@@ -227,6 +260,15 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         objetos.push_back(new Gangorra(5,0,0,0,0,0,0,1,1,1,false,false));
         break;
     case '6':
+        objetos.push_back(new Balanco(5,0,0,0,0,0,0,1,1,1,false,false));
+        break;
+    case '7':
+        objetos.push_back(new Lixo(5,0,0,0,0,0,0,1,1,1,false,false));
+        break;
+    case '8':
+        objetos.push_back(new Escorregador(5,0,0,0,0,0,0,1,1,1,false,false));
+        break;
+    case '"':
         glutGUI::cam->e.x = 0;
         glutGUI::cam->e.y = 15;
         glutGUI::cam->e.z = 0;
@@ -237,7 +279,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         glutGUI::cam->u.y = 0;
         glutGUI::cam->u.z = 0;
         break;
-    case '7':
+    case '!':
         glutGUI::cam->e.x = -10;
         glutGUI::cam->e.y = 2;
         glutGUI::cam->e.z = 10;
@@ -248,7 +290,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
-    case '8':
+    case '@':
         glutGUI::cam->e.x = 10;
         glutGUI::cam->e.y = 2;
         glutGUI::cam->e.z = 10;
@@ -259,7 +301,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
-    case '9':
+    case '#':
         glutGUI::cam->e.x = 10;
         glutGUI::cam->e.y = 2;
         glutGUI::cam->e.z = -10;
@@ -270,7 +312,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
-    case '-':
+    case '$':
         glutGUI::cam->e.x = -10;
         glutGUI::cam->e.y = 2;
         glutGUI::cam->e.z = -10;
@@ -281,7 +323,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
-    case '=':
+    case '%':
         glutGUI::cam->e.x = 0;
         glutGUI::cam->e.y = 1;
         glutGUI::cam->e.z = -10;

@@ -16,7 +16,6 @@ Balanco::Balanco(int ident, float t_x, float t_y, float t_z,
     esca_z = e_z;
     selecionado = sel;
     cord_local = cl;
-    //model = new Model3DS("../3ds/swing.3ds");
 }
 
 
@@ -58,13 +57,6 @@ void Balanco::desenha()
         GUI::drawBox(-0.9,0,-0.1, -0.75,1,0.1);
 
 
-//        glTranslatef(0,0,0);
-//        glRotatef(-90,1,0,0);
-//        glScalef(1, 1, 1);
-//        glScalef(0.0005, 0.0009, 0.0009);
-//        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
-//                                   //não colorido internamente para que a cor de destaque
-//                                   //da seleção tenha efeito
     glPopMatrix();
 
 }

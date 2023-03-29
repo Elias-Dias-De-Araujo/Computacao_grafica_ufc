@@ -16,7 +16,6 @@ Escorregador::Escorregador(int ident, float t_x, float t_y, float t_z,
     esca_z = e_z;
     selecionado = sel;
     cord_local = cl;
-    //model = new Model3DS("../3ds/slide.3DS");
 }
 
 
@@ -133,8 +132,6 @@ void Escorregador::desenha()
             glVertex3f(-0.4,0.1,0.8);
         glEnd();
 
-
-
         // base inferior
         glBegin(GL_POLYGON);
             glNormal3f(0,1,0);
@@ -198,14 +195,6 @@ void Escorregador::desenha()
         GUI::drawBox(0.25,0,-0.15, 0.40,1,-0.1);
         GUI::drawBox(-0.40,0,-0.15, -0.25,1,-0.1);
 
-//        glTranslatef(0,0,0);
-//        glRotatef(-90,0,1,0);
-//        glRotatef(-90,1,0,0);
-//        glScalef(1, 1, 1);
-//        glScalef(0.0005, 0.0005, 0.0005);
-//        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
-//                                   //não colorido internamente para que a cor de destaque
-//                                   //da seleção tenha efeito
     glPopMatrix();
 
 }

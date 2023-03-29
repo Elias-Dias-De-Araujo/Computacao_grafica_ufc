@@ -16,7 +16,7 @@ Balanco::Balanco(int ident, float t_x, float t_y, float t_z,
     esca_z = e_z;
     selecionado = sel;
     cord_local = cl;
-    model = new Model3DS("../3ds/swing.3ds");
+    //model = new Model3DS("../3ds/swing.3ds");
 }
 
 
@@ -36,13 +36,35 @@ void Balanco::desenha()
             GUI::setColor(1.0,1.0,1.0);
         }
 
-        glTranslatef(0,0,0);
-        glRotatef(-90,1,0,0);
-        glScalef(1, 1, 1);
-        glScalef(0.0005, 0.0009, 0.0009);
-        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
-                                   //não colorido internamente para que a cor de destaque
-                                   //da seleção tenha efeito
+        // madeira cima
+        GUI::drawBox(-0.75,0.9,-0.05, 0.75,1,0.05);
+
+        GUI::setColor(1,1,1);
+        // cabos centro
+        GUI::drawBox(-0.26,0.4,-0.005, -0.25,0.9,0.005);
+        GUI::drawBox(0.25,0.4,-0.005, 0.26,0.9,0.005);
+
+        GUI::setColor(0.87058,0.72156,0.52941);
+        if (selecionado) {
+
+            GUI::setColor(1.0,1.0,1.0);
+        }
+
+        // bancada
+        GUI::drawBox(-0.30,0.4,-0.1, 0.30,0.42,0.1);
+
+        // madeiras laterais
+        GUI::drawBox(0.75,0,-0.1, 0.9,1,0.1);
+        GUI::drawBox(-0.9,0,-0.1, -0.75,1,0.1);
+
+
+//        glTranslatef(0,0,0);
+//        glRotatef(-90,1,0,0);
+//        glScalef(1, 1, 1);
+//        glScalef(0.0005, 0.0009, 0.0009);
+//        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
+//                                   //não colorido internamente para que a cor de destaque
+//                                   //da seleção tenha efeito
     glPopMatrix();
 
 }

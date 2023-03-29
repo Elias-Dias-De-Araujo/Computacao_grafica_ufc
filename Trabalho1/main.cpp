@@ -4,8 +4,6 @@ using namespace std;
 
 #include <gui.h>
 #include <vector>
-
-//#include <objeto.h>
 #include <fstream>
 #include <vector>
 #include <gui.h>
@@ -21,23 +19,14 @@ using namespace std;
 #include "escorregador.h"
 #include "lixo.h"
 
-//Model3DS model3ds("../3ds/cartest.3DS");
-
 int index_selecionado = 0;
 bool selecao_iniciada = false;
 
-Vetor3D desl(0,0,0);//vetor de deslocamento tridimensional (x,y,z)
-Vetor3D rot(0,0,0);
-
 vector<Objeto*> objetos;
-
-
-//Sentido apontando para mim Anti-horário, para ângulos é a mesma coisa
-//redefinir escalas, rotações e translações sempre de baixo para cima a partir do código
 
 void atualizar_arquivo()
 {
-    ofstream arquivo;
+    ofstream arquivo; // dados programa -> arquivo
     arquivo.open("arquivo_save.txt");
     for (int i = 0; i < objetos.size(); ++i) {
         arquivo << objetos[i]->identifier << " " << objetos[i]->trans_x << " " << objetos[i]->trans_y << " " << objetos[i]->trans_z << " " <<
@@ -50,7 +39,7 @@ void atualizar_arquivo()
 
 void ler_arquivo()
 {
-    ifstream arquivo;
+    ifstream arquivo; // dados arquivo -> programa
     arquivo.open("arquivo_save.txt");
     string linha;
     vector<float> dados_linha;
@@ -61,55 +50,54 @@ void ler_arquivo()
             std::stringstream ss(linha);
 
             double n;
-            // Percorre o stream e adiciona cada número ao vetor
+            // Percorre o stream e adiciona cada número da linha ao vetor de float
             while (ss >> n) {
                 dados_linha.push_back(n);
             }
 
-
-            // Convertendo identificador float para char
+            // Convertendo identificador de float para char
             sprintf(identificador_switch, "%f", dados_linha[0]);
             switch(identificador_switch[0]) {
                 case '1':
                     objetos.push_back(new Arvore(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
-                            ,dados_linha[7],dados_linha[8],dados_linha[9],
-                            (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
                     break;
                 case '2':
-                objetos.push_back(new Mesa(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    objetos.push_back(new Mesa(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
                         ,dados_linha[7],dados_linha[8],dados_linha[9],
                         (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
                     break;
                 case '3':
-                objetos.push_back(new Tenda(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                    objetos.push_back(new Tenda(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
                         ,dados_linha[7],dados_linha[8],dados_linha[9],
                         (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
                     break;
                 case '4':
-                objetos.push_back(new Banco(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
-                    ,dados_linha[7],dados_linha[8],dados_linha[9],
-                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
-                break;
+                    objetos.push_back(new Banco(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
                 case '5':
-                objetos.push_back(new Gangorra(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
-                    ,dados_linha[7],dados_linha[8],dados_linha[9],
-                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
-                break;
+                    objetos.push_back(new Gangorra(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
                 case '6':
-                objetos.push_back(new Balanco(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
-                    ,dados_linha[7],dados_linha[8],dados_linha[9],
-                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
-                break;
+                    objetos.push_back(new Balanco(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
                 case '7':
-                objetos.push_back(new Lixo(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
-                    ,dados_linha[7],dados_linha[8],dados_linha[9],
-                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
-                break;
+                    objetos.push_back(new Lixo(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
                 case '8':
-                objetos.push_back(new Escorregador(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
-                    ,dados_linha[7],dados_linha[8],dados_linha[9],
-                    (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
-                break;
+                    objetos.push_back(new Escorregador(dados_linha[0],dados_linha[1],dados_linha[2],dados_linha[3],dados_linha[4],dados_linha[5],dados_linha[6]
+                        ,dados_linha[7],dados_linha[8],dados_linha[9],
+                        (dados_linha[10] == 0) ? false : true , (dados_linha[11] == 0) ? false : true));
+                    break;
                 default:
                     break;
             }
@@ -117,32 +105,21 @@ void ler_arquivo()
         }
         arquivo.close();
     }else {
-
+        // Configuração inicial do cenário
         objetos.push_back(new Arvore(1,-2.50,0,-3,0,0,0,1,1,1,false,false));
         objetos.push_back(new Arvore(1,-4,0,-3,0,0,0,1,1,1,false,false));
-
-        // mesa centro
         objetos.push_back(new Mesa(2,-2,0,3,0,0,0,1,1,1,false,false));
-        // mesa direita
         objetos.push_back(new Mesa(2,-1,0,3,0,0,0,0.5,0.5,0.5,false,false));
-        // mesa esquerda
         objetos.push_back(new Mesa(2,-2.90,0,3,0,0,0,0.5,0.5,0.5,false,false));
-        // mesa frente
         objetos.push_back(new Mesa(2,-2,0,2,0,0,0,0.5,0.5,0.5,false,false));
-        // mesa trás
         objetos.push_back(new Mesa(2,-2,0,4,0,0,0,0.5,0.5,0.5,false,false));
-
-        // Tenda quadrante inferior direito
         objetos.push_back(new Tenda(3,3,0,3,0,0,0,2,1,2,false,false));
-
-        // Bancos
         objetos.push_back(new Banco(4,-3,0,-1,0,0,0,1,1,1,false,false));
         objetos.push_back(new Banco(4,-3,0,1,0,180,0,1,1,1,false,false));
-
         objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Balanco(6,2,0,-3.5,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Balanco(6,2,0,-3,0,0,0,1,1,1,false,false));
         objetos.push_back(new Lixo(7,-1,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Escorregador(8,4,0,-4,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Escorregador(8,0,0,0,0,0,0,1,1,1,false,false));
     }
 }
 
@@ -205,9 +182,6 @@ void displayInner() {
     GUI::drawFloor(10,10,0.5,0.5);//(largura, comprimento, vertices largura, vertices comprimento)
 
 
-    //GUI::setColor(0,1,0, 1,true);
-    //GUI::drawBox(0+desl.x,0+desl.y,0+desl.z, 1+desl.x,1+desl.y,1+desl.z);//(x0,y0,z0, xf,yf,zf)
-
     for (int i = 0; i < objetos.size(); ++i) {
         glPushMatrix();
             objetos[i]->desenha();
@@ -229,7 +203,7 @@ void desenha() {
 
     GUI::displayEnd();
 
-    atualizar_arquivo();
+    //atualizar_arquivo();
 }
 
 
@@ -336,30 +310,37 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case 'd':
         if(selecao_iniciada) {
-            objetos.erase(objetos.begin() + index_selecionado);
-            index_selecionado--;
+            objetos.erase(objetos.begin() + index_selecionado); // apaga o objeto do index atual
+            index_selecionado--; // reduz para o index anterior no vetor
+
+            // caso o primeiro objeto seja deletado o index vai para o último ( ideia ciclica do vetor )
             if(index_selecionado == -1){
                 index_selecionado = objetos.size() - 1;
             }
+
+            // caso o vetor esteja vazio a seleção termina e o index volta para o valor default de 0
             if(objetos.size() == 0) {
                 index_selecionado = 0;
                 selecao_iniciada = false;
             }
 
-            if(selecao_iniciada) { // verifica se o vector ainda possui valores, se possuir seta o selecionado do outro objeto do vector
+            if(selecao_iniciada) { // verifica se o vector ainda possui valores, se possuir seta o selecionado do atual objeto do vetor
                 objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
             }
         }
         break;
     case 'D':
         if(selecao_iniciada) {
+            // caso o último objeto seja o atual selecionado então o index é reduzido para o penúltimo
             if(index_selecionado == objetos.size() -1){
                 index_selecionado--;
                 objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
             }
 
+            // apagando último objeto do vetor
             objetos.erase(objetos.begin() + (objetos.size() - 1));
 
+            // caso o vetor esteja vazio a seleção termina e o index volta para o valor default de 0
             if(objetos.size() == 0) {
                 index_selecionado = 0;
                 selecao_iniciada = false;
@@ -369,13 +350,15 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
 
         break;
     case 'O':
+        // inicia a seleção, e o primeiro objeto do vetor passa a ser selecionado
         selecao_iniciada = !selecao_iniciada;
         objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
         break;
     case 'n':
         if(selecao_iniciada) {
-            objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
-            index_selecionado++;
+            objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado; // remove a seleção do atual
+            index_selecionado++; // incrementa o index para o seguinte
+            // caso tenha ultrapassado o último index ele retorna para o ínicial
             if(index_selecionado == objetos.size()){
                 index_selecionado = 0;
             }
@@ -386,6 +369,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         if(selecao_iniciada) {
             objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
             index_selecionado--;
+            // caso tenha regredido do primeiro index ele vai para o index final
             if(index_selecionado == -1){
                 index_selecionado = objetos.size() - 1;
             }
@@ -394,6 +378,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case 'v':
         if(selecao_iniciada) {
+            // desenhar coordenadas locais no objeto selecionado
             objetos[index_selecionado]->cord_local = !objetos[index_selecionado]->cord_local;
         }
         break;

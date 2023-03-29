@@ -29,7 +29,7 @@ void Banco::desenha()
             GUI::drawOrigin(1);
         }
 
-        GUI::setColor(0.5,0.5,0.5);
+        GUI::setColor(0.53725,0.41960,0.28627);
 
         if (selecionado) {
             GUI::setColor(1.0,1.0,1.0);
@@ -40,7 +40,7 @@ void Banco::desenha()
         glRotatef(-90,1,0,0);
         glScalef(1, 1, 1);
         glScalef(0.005, 0.005, 0.005);
-        model->draw(!selecionado); //se estiver selecionado, tem que desenhar o modelo 3ds
+        model->draw(false); //se estiver selecionado, tem que desenhar o modelo 3ds
                                    //não colorido internamente para que a cor de destaque
                                    //da seleção tenha efeito
     glPopMatrix();

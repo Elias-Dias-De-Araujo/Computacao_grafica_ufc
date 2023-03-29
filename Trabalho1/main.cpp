@@ -126,6 +126,8 @@ void ler_arquivo()
 
         objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
         objetos.push_back(new Balanco(6,2,0,-4,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Lixo(7,-1,0,-0.25,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Escorregador(8,4,0,-4,0,0,0,1,1,1,false,false));
     }
 }
 
@@ -154,7 +156,19 @@ void displayInner() {
 
     //GUI::drawOrigin(1);//(pontos em caxa eixo)
     GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
+    glPushMatrix();
+        GUI::setColor(0.76078,0.77254,0.8, 1,true);
+        // calçada
+        glBegin(GL_POLYGON);
+            glNormal3f(0,1,0);
+            glVertex3f(-5,0,-0.5);
+            glVertex3f(-5,0,0.5);
+            glVertex3f(5,0,0.5);
+            glVertex3f(5,0,-0.5);
+        glEnd();
+    glPopMatrix();
     GUI::setColor(0.0118,0.7333,0.5216, 1,true);//(red,green,blue,opacidade,componente_de_reflexão)
+
     GUI::drawFloor(10,10,0.5,0.5);//(largura, comprimento, vertices largura, vertices comprimento)
 
 

@@ -119,7 +119,7 @@ void ler_arquivo()
         objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
         objetos.push_back(new Balanco(6,2,0,-3,0,0,0,1,1,1,false,false));
         objetos.push_back(new Lixo(7,-1,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Escorregador(8,0,0,0,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Escorregador(8,4,0,-3,0,0,0,1,1,1,false,false));
     }
 }
 
@@ -203,7 +203,7 @@ void desenha() {
 
     GUI::displayEnd();
 
-    //atualizar_arquivo();
+    atualizar_arquivo();
 }
 
 

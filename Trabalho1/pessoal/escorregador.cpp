@@ -35,7 +35,6 @@ void Escorregador::desenha()
 
             GUI::setColor(1.0,1.0,1.0);
         }
-
         // base superior
         glBegin(GL_POLYGON);
             glNormal3f(0,1,0);
@@ -43,6 +42,46 @@ void Escorregador::desenha()
             glVertex3f(0.4,1,-0.1);
             glVertex3f(-0.4,1,-0.1);
             glVertex3f(-0.4,1,0.5);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(0,-1,0);
+            glVertex3f(-0.4,1,0.5);
+            glVertex3f(-0.4,1,-0.1);
+            glVertex3f(0.4,1,-0.1);
+            glVertex3f(0.4,1,0.5);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(1,0,0);
+            glVertex3f(0.4,1,0.6);
+            glVertex3f(0.4,1,-0.1);
+            glVertex3f(0.4,1.1,-0.1);
+            glVertex3f(0.4,1.1,0.6);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(-1,0, 0);
+            glVertex3f(0.4,1.1,0.6);
+            glVertex3f(0.4,1.1,-0.1);
+            glVertex3f(0.4,1,-0.1);
+            glVertex3f(0.4,1,0.6);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(1,0,0);
+            glVertex3f(-0.4,1,0.6);
+            glVertex3f(-0.4,1,-0.1);
+            glVertex3f(-0.4,1.1,-0.1);
+            glVertex3f(-0.4,1.1,0.6);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(-1,0,0);
+            glVertex3f(-0.4,1.1,0.6);
+            glVertex3f(-0.4,1.1,-0.1);
+            glVertex3f(-0.4,1,-0.1);
+            glVertex3f(-0.4,1,0.6);
         glEnd();
 
         // base inclinada
@@ -54,6 +93,48 @@ void Escorregador::desenha()
             glVertex3f(-0.4,0.1,0.8);
         glEnd();
 
+        glBegin(GL_POLYGON);
+            glNormal3f(0,-1,-1);
+            glVertex3f(-0.4,0.1,0.8);
+            glVertex3f(-0.4,1,0.5);
+            glVertex3f(0.4,1,0.5);
+            glVertex3f(0.4,0.1,0.8);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(1,0,0);
+            glVertex3f(0.4,0.1,0.8);
+            glVertex3f(0.4,1,0.5);
+            glVertex3f(0.4,1,0.6);
+            glVertex3f(0.4,0.1,0.9);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(-1,0,0);
+            glVertex3f(0.4,0.1,0.9);
+            glVertex3f(0.4,1,0.6);
+            glVertex3f(0.4,1,0.5);
+            glVertex3f(0.4,0.1,0.8);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(1,0,0);
+            glVertex3f(-0.4,0.1,0.8);
+            glVertex3f(-0.4,1,0.5);
+            glVertex3f(-0.4,1,0.6);
+            glVertex3f(-0.4,0.1,0.9);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(-1,0,0);
+            glVertex3f(-0.4,0.1,0.9);
+            glVertex3f(-0.4,1,0.6);
+            glVertex3f(-0.4,1,0.5);
+            glVertex3f(-0.4,0.1,0.8);
+        glEnd();
+
+
+
         // base inferior
         glBegin(GL_POLYGON);
             glNormal3f(0,1,0);
@@ -63,7 +144,50 @@ void Escorregador::desenha()
             glVertex3f(-0.4,0.1,1.2);
         glEnd();
 
-        //GUI::drawBox(-0.4,0.95,-0.1, 0.4,1,0.5);
+        glBegin(GL_POLYGON);
+            glNormal3f(0,-1,0);
+            glVertex3f(-0.4,0.1,1.2);
+            glVertex3f(-0.4,0.1,0.8);
+            glVertex3f(0.4,0.1,0.8);
+            glVertex3f(0.4,0.1,1.2);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(1,0,0);
+            glVertex3f(0.4,0.1,1.2);
+            glVertex3f(0.4,0.1,0.8);
+            glVertex3f(0.4,0.2,0.85);
+            glVertex3f(0.4,0.2,1.2);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(-1,0,0);
+            glVertex3f(0.4,0.2,1.2);
+            glVertex3f(0.4,0.2,0.85);
+            glVertex3f(0.4,0.1,0.8);
+            glVertex3f(0.4,0.1,1.2);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(1,0,0);
+            glVertex3f(-0.4,0.1,1.2);
+            glVertex3f(-0.4,0.1,0.8);
+            glVertex3f(-0.4,0.2,0.85);
+            glVertex3f(-0.4,0.2,1.2);
+        glEnd();
+
+        glBegin(GL_POLYGON);
+            glNormal3f(-1,0,0);
+            glVertex3f(-0.4,0.2,1.2);
+            glVertex3f(-0.4,0.2,0.85);
+            glVertex3f(-0.4,0.1,0.8);
+            glVertex3f(-0.4,0.1,1.2);
+        glEnd();
+
+        // pilares
+        GUI::drawBox(-0.4,0,0.45, -0.38,1,0.5);
+        GUI::drawBox(0.38,0,0.45, 0.4,1,0.5);
+        GUI::drawBox(-0.05,0,0.98, 0.05,0.1,1);
 
         // degraus
         GUI::drawBox(-0.25,0.20,-0.15, 0.25,0.25,-0.1);

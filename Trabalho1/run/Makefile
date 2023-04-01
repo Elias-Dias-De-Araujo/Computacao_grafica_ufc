@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Trabalho11.0.0
-DISTDIR = /home/elias_dias/www/Computacao_grafica_ufc/Trabalho1/run/.tmp/Trabalho11.0.0
+DISTDIR = /home/elias/www/Computacao_grafica_ufc/Trabalho1/run/.tmp/Trabalho11.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) -lGL -lGLU -lglut -l3ds -lSDL_image   
@@ -486,7 +486,16 @@ banco.o: ../pessoal/banco.cpp ../pessoal/banco.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o banco.o ../pessoal/banco.cpp
 
-escorregador.o: ../pessoal/escorregador.cpp ../pessoal/escorregador.h
+escorregador.o: ../pessoal/escorregador.cpp ../pessoal/escorregador.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o escorregador.o ../pessoal/escorregador.cpp
 
 gangorra.o: ../pessoal/gangorra.cpp ../pessoal/gangorra.h \
@@ -501,7 +510,16 @@ gangorra.o: ../pessoal/gangorra.cpp ../pessoal/gangorra.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gangorra.o ../pessoal/gangorra.cpp
 
-lixo.o: ../pessoal/lixo.cpp ../pessoal/lixo.h
+lixo.o: ../pessoal/lixo.cpp ../pessoal/lixo.h \
+		../pessoal/objeto.h \
+		../gui_glut/gui.h \
+		../gui_glut/extra.h \
+		../bib/CameraDistante.h \
+		../bib/Camera.h \
+		../bib/Vetor3D.h \
+		../bib/CameraJogo.h \
+		../bib/Desenha.h \
+		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lixo.o ../pessoal/lixo.cpp
 
 mesa.o: ../pessoal/mesa.cpp ../pessoal/mesa.h \

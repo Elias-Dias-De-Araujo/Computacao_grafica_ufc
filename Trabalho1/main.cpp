@@ -127,14 +127,14 @@ void Aplicar_transformacoes() {
     // Aplicando transformações no objeto selecionado
     if(selecao_iniciada) {
         // Translações
-        objetos[index_selecionado]->trans_x += glutGUI::dtx;
-        objetos[index_selecionado]->trans_y += glutGUI::dty;
-        objetos[index_selecionado]->trans_z += glutGUI::dtz;
+        objetos[index_selecionado]->trans_x += 2 * glutGUI::dtx;
+        objetos[index_selecionado]->trans_y += 2 * glutGUI::dty;
+        objetos[index_selecionado]->trans_z += 2 * glutGUI::dtz;
 
         // Rotações
-        objetos[index_selecionado]->rot_x += glutGUI::dax;
-        objetos[index_selecionado]->rot_y += glutGUI::day;
-        objetos[index_selecionado]->rot_z += glutGUI::daz;
+        objetos[index_selecionado]->rot_x += 2 * glutGUI::dax;
+        objetos[index_selecionado]->rot_y += 2 * glutGUI::day;
+        objetos[index_selecionado]->rot_z += 2 * glutGUI::daz;
 
         // Escalas
         objetos[index_selecionado]->esca_x += glutGUI::dsx;
@@ -146,7 +146,6 @@ void Aplicar_transformacoes() {
 void displayInner() {
     GUI::setLight(0,  3,5,4, true,false);//(tecla de apagar, x,y,z , desligar e ligar luz, (false = forte, true = atenuada))
 
-    //GUI::drawOrigin(1);//(pontos em caxa eixo)
     GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
     glPushMatrix();
         GUI::setColor(0.49803,0.50196,0.46274, 1,true);
@@ -179,7 +178,7 @@ void displayInner() {
     glPopMatrix();
     GUI::setColor(0.0118,0.7333,0.5216, 1,true);//(red,green,blue,opacidade,componente_de_reflexão)
 
-    GUI::drawFloor(10,10,0.5,0.5);//(largura, comprimento, vertices largura, vertices comprimento)
+    GUI::drawFloor(10,10,0.1,0.1);//(largura, comprimento, vertices largura, vertices comprimento)
 
 
     for (int i = 0; i < objetos.size(); ++i) {
@@ -191,11 +190,6 @@ void displayInner() {
 
 void desenha() {
     GUI::displayInit();
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    gluLookAt(glutGUI::cam->e.x,glutGUI::cam->e.y,glutGUI::cam->e.z, glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z, glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
 
     displayInner();
 
@@ -249,9 +243,9 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 0;
         glutGUI::cam->c.z = 0;
-        glutGUI::cam->u.x = 1;
+        glutGUI::cam->u.x = 0;
         glutGUI::cam->u.y = 0;
-        glutGUI::cam->u.z = 0;
+        glutGUI::cam->u.z = 1;
         break;
     case '!':
         glutGUI::cam->e.x = -10;

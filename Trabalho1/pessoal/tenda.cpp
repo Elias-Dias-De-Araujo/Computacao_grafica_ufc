@@ -30,12 +30,8 @@ void Tenda::criar(){
        GUI::setColor(1,1,1, 1,true);
     }
 
-    //Linha da base ao topo
-    glBegin(GL_LINES);
-        glNormal3f(1,1,1);
-        glVertex3f(0,0,0);
-        glVertex3f(0,1,0);
-    glEnd();
+    //box da base ao topo
+    GUI::drawBox(-0.01, 0, -0.01, 0.01, 1, 0.01);
 
     // Base do teto
     glBegin(GL_POLYGON);

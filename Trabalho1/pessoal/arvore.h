@@ -13,7 +13,7 @@ public:
             bool sel, bool cl
             );
     void criar();
-    void desenha() override;
+    void desenha();
 };
 
 #endif // ARVORE_H

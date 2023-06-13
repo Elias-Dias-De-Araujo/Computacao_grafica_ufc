@@ -106,20 +106,20 @@ void ler_arquivo()
         arquivo.close();
     }else {
         // Configuração inicial do cenário
-        objetos.push_back(new Arvore(1,-2.50,0,-3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Arvore(1,-4,0,-3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Mesa(2,-2,0,3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Mesa(2,-1,0,3,0,0,0,0.5,0.5,0.5,false,false));
-        objetos.push_back(new Mesa(2,-2.90,0,3,0,0,0,0.5,0.5,0.5,false,false));
-        objetos.push_back(new Mesa(2,-2,0,2,0,0,0,0.5,0.5,0.5,false,false));
-        objetos.push_back(new Mesa(2,-2,0,4,0,0,0,0.5,0.5,0.5,false,false));
-        objetos.push_back(new Tenda(3,3,0,3,0,0,0,2,1,2,false,false));
-        objetos.push_back(new Banco(4,-3,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Banco(4,-3,0,1,0,180,0,1,1,1,false,false));
-        objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Balanco(6,2,0,-3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Lixo(7,-1,0,-1,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Escorregador(8,4,0,-3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Arvore(1,0,0,0,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Arvore(1,-4,0,-3,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Mesa(2,-2,0,3,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Mesa(2,-1,0,3,0,0,0,0.5,0.5,0.5,false,false));
+//        objetos.push_back(new Mesa(2,-2.90,0,3,0,0,0,0.5,0.5,0.5,false,false));
+//        objetos.push_back(new Mesa(2,-2,0,2,0,0,0,0.5,0.5,0.5,false,false));
+//        objetos.push_back(new Mesa(2,-2,0,4,0,0,0,0.5,0.5,0.5,false,false));
+//        objetos.push_back(new Tenda(3,3,0,3,0,0,0,2,1,2,false,false));
+//        objetos.push_back(new Banco(4,-3,0,-1,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Banco(4,-3,0,1,0,180,0,1,1,1,false,false));
+//        objetos.push_back(new Gangorra(5,3,0,-1,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Balanco(6,2,0,-3,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Lixo(7,-1,0,-1,0,0,0,1,1,1,false,false));
+//        objetos.push_back(new Escorregador(8,4,0,-3,0,0,0,1,1,1,false,false));
     }
 }
 

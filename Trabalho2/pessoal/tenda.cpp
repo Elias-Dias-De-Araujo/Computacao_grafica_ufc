@@ -42,23 +42,23 @@ void Tenda::criar(){
         glVertex3f(-0.5,1,-0.5);
     glEnd();
 
-    // Base do chão
-    glBegin(GL_POLYGON);
-        glNormal3f(0,1,0);
-        glVertex3f(-0.5,0,0.5);
-        glVertex3f(0.5,0,0.5);
-        glVertex3f(0.5,0,-0.5);
-        glVertex3f(-0.5,0,-0.5);
-    glEnd();
+//    // Base do chão
+//    glBegin(GL_POLYGON);
+//        glNormal3f(0,1,0);
+//        glVertex3f(-0.5,0,0.5);
+//        glVertex3f(0.5,0,0.5);
+//        glVertex3f(0.5,0,-0.5);
+//        glVertex3f(-0.5,0,-0.5);
+//    glEnd();
 
-    // Base do chão(inferior)
-    glBegin(GL_POLYGON);
-        glNormal3f(0,-1,0);
-        glVertex3f(-0.5,0,-0.5);
-        glVertex3f(0.5,0,-0.5);
-        glVertex3f(0.5,0,0.5);
-        glVertex3f(-0.5,0,0.5);
-    glEnd();
+//    // Base do chão(inferior)
+//    glBegin(GL_POLYGON);
+//        glNormal3f(0,-1,0);
+//        glVertex3f(-0.5,0,-0.5);
+//        glVertex3f(0.5,0,-0.5);
+//        glVertex3f(0.5,0,0.5);
+//        glVertex3f(-0.5,0,0.5);
+//    glEnd();
 
     //Triangulo Frente
     glBegin(GL_POLYGON);

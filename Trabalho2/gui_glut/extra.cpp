@@ -1,12 +1,9 @@
 #include "extra.h"
 
-bool glutGUI::iluminacao3D = true; //AL
-
 int glutGUI::width = 400;
 int glutGUI::height = 300;
 
 bool glutGUI::perspective = true;
-float glutGUI::orthof = 0.0025; //0.003;
 
 bool glutGUI::picking = false;
 
@@ -27,17 +24,17 @@ Axis glutGUI::axis = AXIS_Y;
 int glutGUI::nIterations = 10;
 
 
-int glutGUI::slices = 200; //400;//16;
-int glutGUI::stacks = 200; //400;//16;
+int glutGUI::slices = 50; //400;//16;
+int glutGUI::stacks = 50; //400;//16;
 
-int glutGUI::posCam = 1;
+int glutGUI::posCam = 0;
 
 bool glutGUI::iluminacao = true;
 bool glutGUI::enabled_light[8] = {true,true,true,true,true,true,true,false};
 bool glutGUI::hidden_light[8] = {false,false,false,false,false,false,false,false};
 bool glutGUI::pontual_light[8] = {true,true,true,true,true,true,true,true};
 bool glutGUI::spot_light[8] = {false,false,false,false,false,false,false,false};
-float glutGUI::spot_angle = 25.0;
+float glutGUI::spot_angle = 5.0;
 bool glutGUI::trans_luz = false;
 
 bool glutGUI::obj_transp = false;
@@ -157,8 +154,8 @@ void glutGUI::defaultDisplay() {
             glTranslated(0.,-0.0001,0.);
             float width = 5.0;
             float height = 5.0;
-            float discrWidth = 1;
-            float discrHeight = 1;
+            float discrWidth = 0.03;
+            float discrHeight = 0.03;
             int nWidth = width/discrWidth;
             int nHeight = height/discrHeight;
             discrWidth = width/nWidth; //correcao necessaria, pois, caso width/discrWidth nao seja inteiro, nWidth*discrWidth (feito pelo for) nao completara exatamente a width
@@ -216,7 +213,6 @@ void glutGUI::defaultKey(unsigned char key, int x, int y)
         posCam = 1;
         delete cam;
         cam = new CameraDistante(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
-        orthof = 0.00025*(cam->c - cam->e).modulo();
         break;
     case 'j':
         posCam = 1;
@@ -235,7 +231,6 @@ void glutGUI::defaultKey(unsigned char key, int x, int y)
             break;
         case 2:
             cam = new CameraDistante(5,1,0, 0,1,0, 0,1,0);
-            //cam = new CameraDistante(5,0,0, 0,0,0, 0,1,-1);
             break;
         case 3:
             cam = new CameraDistante(0,1,-5, 0,1,0, 0,1,0);
@@ -247,7 +242,6 @@ void glutGUI::defaultKey(unsigned char key, int x, int y)
             cam = new CameraDistante(0,6,0, 0,1,0, 0,0,-1);
             break;
         }
-        orthof = 0.00025*(cam->c - cam->e).modulo();
         break;
     case 's':
         //save current camera location
@@ -393,17 +387,6 @@ void glutGUI::defaultMouseButton(int button, int state, int x, int y) {
     last_y = y;
 }
 
-//botao direito         bt dir e esq
-//horiz      vert       vert
-//dtx = 0.0; dty = 0.0; dtz = 0.0;
-
-//botao esq             bt dir e esq
-//vert       horiz      horiz
-//dax = 0.0; day = 0.0; daz = 0.0;
-
-//botao meio            bt esq e meio
-//horiz      vert       vert
-//dsx = 0.0; dsy = 0.0; dsz = 0.0;
 void glutGUI::mouseMove(int x, int y) {
     if ( mouse_lock == ONLY_X ) last_y = y;
     if ( mouse_lock == ONLY_Y ) last_x = x;
@@ -451,9 +434,6 @@ void glutGUI::mouseMove(int x, int y) {
     if (lbpressed && rbpressed && !mbpressed) {
         if (!trans_obj && !trans_luz) {
             cam->zoom(y,last_y);
-            //orthof += -(y - last_y)/50000.0;
-            orthof = 0.00025*(cam->c - cam->e).modulo();
-            //cam->rotatez(x,last_x);
         }
         if (trans_obj) {
             fator = 100.0;

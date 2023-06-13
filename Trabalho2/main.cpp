@@ -21,6 +21,13 @@ using namespace std;
 
 int index_selecionado = 0;
 bool selecao_iniciada = false;
+size_t pontoSelecionado = 0;
+
+//-------------------sombra-------------------
+bool drawShadow = false;
+bool pontual = true;
+float k = 0.0;
+//-------------------sombra-------------------
 
 vector<Objeto*> objetos;
 
@@ -125,67 +132,104 @@ void ler_arquivo()
 
 void Aplicar_transformacoes() {
     // Aplicando transformações no objeto selecionado
-    if(selecao_iniciada) {
+    if (pontoSelecionado != 0 and pontoSelecionado <= objetos.size()) {
         // Translações
-        objetos[index_selecionado]->trans_x += 2 * glutGUI::dtx;
-        objetos[index_selecionado]->trans_y += 2 * glutGUI::dty;
-        objetos[index_selecionado]->trans_z += 2 * glutGUI::dtz;
+        objetos[pontoSelecionado-1]->trans_x += 2 * glutGUI::dtx;
+        objetos[pontoSelecionado-1]->trans_y += 2 * glutGUI::dty;
+        objetos[pontoSelecionado-1]->trans_z += 2 * glutGUI::dtz;
 
         // Rotações
-        objetos[index_selecionado]->rot_x += 2 * glutGUI::dax;
-        objetos[index_selecionado]->rot_y += 2 * glutGUI::day;
-        objetos[index_selecionado]->rot_z += 2 * glutGUI::daz;
+        objetos[pontoSelecionado-1]->rot_x += 2 * glutGUI::dax;
+        objetos[pontoSelecionado-1]->rot_y += 2 * glutGUI::day;
+        objetos[pontoSelecionado-1]->rot_z += 2 * glutGUI::daz;
 
         // Escalas
-        objetos[index_selecionado]->esca_x += glutGUI::dsx;
-        objetos[index_selecionado]->esca_y += glutGUI::dsy;
-        objetos[index_selecionado]->esca_z += glutGUI::dsz;
+        objetos[pontoSelecionado-1]->esca_x += glutGUI::dsx;
+        objetos[pontoSelecionado-1]->esca_y += glutGUI::dsy;
+        objetos[pontoSelecionado-1]->esca_z += glutGUI::dsz;
     }
 }
 
 void displayInner() {
-    GUI::setLight(0,  3,5,4, true,false);//(tecla de apagar, x,y,z , desligar e ligar luz, (false = forte, true = atenuada))
+    //GUI::setLight(0,  3,5,4, true,false);//(tecla de apagar, x,y,z , desligar e ligar luz, (false = forte, true = atenuada))
 
-    GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
-    glPushMatrix();
-        GUI::setColor(0.49803,0.50196,0.46274, 1,true);
-        // calçada horizontal
-        glBegin(GL_POLYGON);
-            glNormal3f(0,1,0);
-            glVertex3f(-5,0,-0.5);
-            glVertex3f(-5,0,0.5);
-            glVertex3f(5,0,0.5);
-            glVertex3f(5,0,-0.5);
-        glEnd();
+    //GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
 
-        // calçada vertical metade frente
-        glBegin(GL_POLYGON);
-            glNormal3f(0,1,0);
-            glVertex3f(-0.5,0,5);
-            glVertex3f(0.5,0,5);
-            glVertex3f(0.5,0,0.5);
-            glVertex3f(-0.5,0,0.5);
-        glEnd();
-
-        // calçada vertical metade trás
-        glBegin(GL_POLYGON);
-            glNormal3f(0,1,0);
-            glVertex3f(-0.5,0,-0.5);
-            glVertex3f(0.5,0,-0.5);
-            glVertex3f(0.5,0,-5);
-            glVertex3f(-0.5,0,-5);
-        glEnd();
-    glPopMatrix();
     GUI::setColor(0.0118,0.7333,0.5216, 1,true);//(red,green,blue,opacidade,componente_de_reflexão)
 
-    GUI::drawFloor(10,10,0.1,0.1);//(largura, comprimento, vertices largura, vertices comprimento)
+    glPushMatrix();
+        //-------------------sombra-------------------
+        glTranslated(0.0,k,0.0); //glTranslated(0.0,k-0.001,0.0);
+        GUI::drawFloor(10,10,0.1,0.1);//(largura, comprimento, vertices largura, vertices comprimento)
 
+        //GUI::drawPlane(Vetor3D(2,2,3), k, 15, 15, 0.5, 0.5); //chama o drawFloor dentro //-0.001 definido dentro do drawFloor
+        //GUI::drawPlane(Vetor3D(0,0,1), k, 15, 15, 0.5, 0.5);
+        //GUI::drawPlane(Vetor3D(0,1,0), k, 15, 15, 0.5, 0.5);
+        //-------------------sombra-------------------
+    glPopMatrix();
 
     for (int i = 0; i < objetos.size(); ++i) {
         glPushMatrix();
             objetos[i]->desenha();
         glPopMatrix();
     }
+
+    //-------------------sombra-------------------
+    //definindo a luz que sera usada para gerar a sombra
+    float lightPos[4] = {1.5+glutGUI::lx,1.5+glutGUI::ly,1.5+glutGUI::lz,pontual};
+    //GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,pontual);
+    GUI::setLight(0,3,5,4,true,false,false,false,pontual);
+    //desenhando os objetos projetados
+    glPushMatrix();
+        //matriz p multiplicar tudo por -1
+            //float neg[16] = {
+            //                   -1.0, 0.0, 0.0, 0.0,
+            //                    0.0,-1.0, 0.0, 0.0,
+            //                    0.0, 0.0,-1.0, 0.0,
+            //                    0.0, 0.0, 0.0,-1.0
+            //                };
+            //glMultTransposeMatrixf( neg );
+        //matriz de projecao para gerar sombra no plano y=k
+            GLfloat sombra[4][4];
+            GUI::shadowMatrixYk(sombra,lightPos,k);
+            //GLfloat plano[4] = {0,1,0,-k};
+            //GUI::shadowMatrix(sombra,plano,lightPos);
+            glMultTransposeMatrixf( (GLfloat*)sombra );
+
+        //matriz de projecao para gerar sombra no plano y=k
+            //GLfloat sombra[4][4];
+            //GUI::shadowMatrixYk(sombra,lightPos,k);
+            //GLfloat plano[4] = {0,1,0,-k};
+            //GLfloat plano[4] = {0,0,1,-k};
+            //GLfloat plano[4] = {1,1,0,-k};
+            //GLfloat plano[4] = {sqrt(2)/2.,sqrt(2)/2.,0,-k}; //      2/4 + 2/4 + 0 = 1
+            //versao plano arbitrario passando coeficiente D do plano (não intuitivo p usuario - diferente de acordo com o tamanho do n)
+            //GLfloat plano[4] = {2,2,3,-k}; //D = -k
+            //GUI::shadowMatrix(sombra,plano,lightPos);
+            //versao plano arbitrario passando dist minima do plano para a origem (mais intuitivo p usuario)
+            //GLfloat distMin = k; //sinal indica se a distancia é no sentido da normal ou contrário
+            //GUI::shadowMatrix(sombra, Vetor3D(2,2,3), distMin, lightPos);
+            //glMultTransposeMatrixf( (GLfloat*)sombra );
+
+
+
+        glDisable(GL_LIGHTING);
+        glColor3d(0.0,0.0,0.0);
+        if (drawShadow) {
+            bool aux = glutGUI::draw_eixos;
+            glutGUI::draw_eixos = false;
+                glPushMatrix();
+                    objetos[index_selecionado]->desenha();
+                glPopMatrix();
+            glutGUI::draw_eixos = aux;
+        }
+        glEnable(GL_LIGHTING);
+        //glDisable(GL_LIGHTING);
+        //glColor3d(0.0,0.0,0.0);
+        //if (drawShadow) desenhaObjetosComSombra();
+        //glEnable(GL_LIGHTING);
+    glPopMatrix();
+    //-------------------sombra-------------------
 }
 
 void desenha() {
@@ -376,16 +420,60 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
             objetos[index_selecionado]->cord_local = !objetos[index_selecionado]->cord_local;
         }
         break;
+    case 's':
+        if(selecao_iniciada) {
+            drawShadow = !drawShadow;
+        }
+        break;
     default:
         break;
     }
-
 }
 
+void desenhaPontosDeControle()
+{
+    for (size_t i=0; i < objetos.size(); i++) {
+        glPushName(i+1);
+            objetos[i]->desenha();
+        glPopName();
+    }
+}
+
+int picking( GLint cursorX, GLint cursorY, int w, int h ) {
+    int BUFSIZE = 512;
+    GLuint selectBuf[512];
+    GUI::pickingInit(cursorX,cursorY,w,h,selectBuf,BUFSIZE);
+    GUI::displayInit();
+    objetos[index_selecionado]->selecionado = false;
+    desenhaPontosDeControle();
+    return GUI::pickingClosestName(selectBuf,BUFSIZE);
+}
+
+void mouse(int button, int state, int x, int y) {
+    GUI::mouseButtonInit(button,state,x,y);
+
+    // if the left button is pressed
+    if (button == GLUT_LEFT_BUTTON) {
+        // when the button is pressed
+        if (state == GLUT_DOWN) {
+            //picking
+            int pick = picking( x, y, 5, 5 );
+            if (pick != 0) {
+                selecao_iniciada = true;
+                pontoSelecionado = pick;
+                objetos[pontoSelecionado-1]->selecionado = true;
+                index_selecionado = pontoSelecionado-1;
+                glutGUI::lbpressed = false;
+            }else {
+                selecao_iniciada = false;
+            }
+        }
+    }
+}
 
 int main()
 {
     ler_arquivo();
     //GUI gui(800,600); // (largura, altura)
-    GUI gui = GUI(800,600,desenha,teclado);
+    GUI gui = GUI(800,600,desenha,teclado, mouse);
 }

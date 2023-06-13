@@ -133,6 +133,14 @@ void Arvore::criar(){
 void Arvore::desenha(){
     glPushMatrix();
         Objeto::desenha(); // T.Rz.Ry.Rx.S. p
+        glTranslatef(2,1,0);
+        glRotatef(90,1,0,0);
+        glRotatef(-90,0,0,1);
+        glScalef(1,0.5,1);
+        glScalef(1,1,0.5);
+        glRotatef(90,0,1,0);
+        glRotatef(-45,0,0,1);
+        glTranslatef(-1,-2,0);
         criar();
     glPopMatrix();
 

@@ -119,7 +119,7 @@ void ler_arquivo()
         // Configuração inicial do cenário
         objetos.push_back(new Arvore(1,-2.50,0,-3,0,0,0,1,1,1,false,false));
         objetos.push_back(new Arvore(1,-4,0,-3,0,0,0,1,1,1,false,false));
-        objetos.push_back(new Mesa(2,-2,0,3,0,0,0,1,1,1,false,false));
+        objetos.push_back(new Mesa(2,0,0,0,0,0,0,1,1,1,false,false));
         objetos.push_back(new Mesa(2,-1,0,3,0,0,0,0.5,0.5,0.5,false,false));
         objetos.push_back(new Mesa(2,-2.90,0,3,0,0,0,0.5,0.5,0.5,false,false));
         objetos.push_back(new Mesa(2,-2,0,2,0,0,0,0.5,0.5,0.5,false,false));
@@ -313,65 +313,107 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
     case '8':
         objetos.push_back(new Escorregador(5,0,0,0,0,0,0,1,1,1,false,false));
         break;
-    case '"':
-        glutGUI::cam->e.x = 0;
-        glutGUI::cam->e.y = 15;
+    case '!':
+        // Perpectiva: 1 ponto de fuga
+        glutGUI::cam->e.x = 1.5;
+        glutGUI::cam->e.y = -0.25;
         glutGUI::cam->e.z = 0;
         glutGUI::cam->c.x = 0;
-        glutGUI::cam->c.y = 0;
-        glutGUI::cam->c.z = 0;
-        glutGUI::cam->u.x = 0;
-        glutGUI::cam->u.y = 0;
-        glutGUI::cam->u.z = 1;
-        break;
-    case '!':
-        glutGUI::cam->e.x = -10;
-        glutGUI::cam->e.y = 2;
-        glutGUI::cam->e.z = 10;
-        glutGUI::cam->c.x = 0;
-        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.y = 1;
         glutGUI::cam->c.z = 0;
         glutGUI::cam->u.x = 0;
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
     case '@':
-        glutGUI::cam->e.x = 10;
-        glutGUI::cam->e.y = 2;
-        glutGUI::cam->e.z = 10;
+        // Perpectiva: 2 pontos de fuga
+        glutGUI::cam->e.x = 1.25;
+        glutGUI::cam->e.y = 0.5;
+        glutGUI::cam->e.z = -1.25;
         glutGUI::cam->c.x = 0;
-        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.y = 1;
         glutGUI::cam->c.z = 0;
         glutGUI::cam->u.x = 0;
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
     case '#':
-        glutGUI::cam->e.x = 10;
-        glutGUI::cam->e.y = 2;
-        glutGUI::cam->e.z = -10;
+        // Perpectiva: 3 pontos de fuga
+        glutGUI::cam->e.x = 1.5;
+        glutGUI::cam->e.y = -0.25;
+        glutGUI::cam->e.z = 1.5;
         glutGUI::cam->c.x = 0;
-        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.y = 1;
         glutGUI::cam->c.z = 0;
         glutGUI::cam->u.x = 0;
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
     case '$':
-        glutGUI::cam->e.x = -10;
-        glutGUI::cam->e.y = 2;
-        glutGUI::cam->e.z = -10;
+        // Ortográfica(vista): Frontal
+        glutGUI::cam->e.x = 0;
+        glutGUI::cam->e.y = 0.5;
+        glutGUI::cam->e.z = 2;
         glutGUI::cam->c.x = 0;
-        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.y = 0.5;
         glutGUI::cam->c.z = 0;
         glutGUI::cam->u.x = 0;
         glutGUI::cam->u.y = 1;
         glutGUI::cam->u.z = 0;
         break;
     case '%':
+        // Ortográfica(vista): Lateral
+        glutGUI::cam->e.x = 2;
+        glutGUI::cam->e.y = 0.5;
+        glutGUI::cam->e.z = 0;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0.5;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '&':
+        // Ortográfica(vista): Planta
         glutGUI::cam->e.x = 0;
+        glutGUI::cam->e.y = 4;
+        glutGUI::cam->e.z = 0;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 0;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 0;
+        glutGUI::cam->u.z = -1;
+        break;
+    case '*':
+        // Ortográfica(axonométrica): Isométrica
+        glutGUI::cam->e.x = 3;
+        glutGUI::cam->e.y = 2;
+        glutGUI::cam->e.z = 3;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 1;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case '(':
+        // Ortográfica(axonométrica): Dimétrica
+        glutGUI::cam->e.x = 3;
         glutGUI::cam->e.y = 1;
-        glutGUI::cam->e.z = -10;
+        glutGUI::cam->e.z = 3;
+        glutGUI::cam->c.x = 0;
+        glutGUI::cam->c.y = 1;
+        glutGUI::cam->c.z = 0;
+        glutGUI::cam->u.x = 0;
+        glutGUI::cam->u.y = 1;
+        glutGUI::cam->u.z = 0;
+        break;
+    case ')':
+        // Ortográfica(axonométrica): Trimétrica
+        glutGUI::cam->e.x = 3;
+        glutGUI::cam->e.y = 1;
+        glutGUI::cam->e.z = 2.5;
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 1;
         glutGUI::cam->c.z = 0;
@@ -432,6 +474,9 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case 'b':
         viewports = !viewports;
+        break;
+    case 'n':
+        glutGUI::perspective = !glutGUI::perspective;
         break;
     default:
         break;

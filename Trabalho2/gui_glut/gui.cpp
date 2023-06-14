@@ -94,6 +94,7 @@ void GUI::setMouseButton(mouseButtonFunction mbFunction)
 
 void GUI::displayInit()
 {
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //limpa a imagem com a cor de fundo
 
     //glViewport(0, 0, glutGUI::width, glutGUI::height);
@@ -119,7 +120,8 @@ void GUI::displayInit()
     }
 
     if (glutGUI::perspective)
-        gluPerspective(30.,ar,0.1,1000.);
+        glFrustum(-1.5,1.5, -1.5,1.5, 1,15);
+        //gluPerspective(30.,ar,0.1,1000.);
     else
         glOrtho(-orthof*w,orthof*w,-orthof*h,orthof*h,0.0,100.0);
 

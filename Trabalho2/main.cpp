@@ -26,10 +26,10 @@ size_t pontoSelecionado = 0;
 bool viewports = false;
 bool scissored = false;
 
-
 //-------------------sombra-------------------
+bool sombras_planos = false;
 bool drawShadow = false;
-bool pontual = true;
+bool tipo_luz = true;
 float k = 0.0;
 
 vector<Objeto*> objetos;
@@ -136,7 +136,7 @@ void ler_arquivo()
 
 void Aplicar_transformacoes() {
     // Aplicando transformações no objeto selecionado
-    if (pontoSelecionado != 0 and pontoSelecionado <= objetos.size()) {
+    if ((pontoSelecionado != 0 and pontoSelecionado <= objetos.size())) {
         // Translações
         objetos[pontoSelecionado-1]->trans_x += 2 * glutGUI::dtx;
         objetos[pontoSelecionado-1]->trans_y += 2 * glutGUI::dty;
@@ -180,9 +180,9 @@ void displayInner() {
 
     //-------------------sombra-------------------
     //definindo a luz que sera usada para gerar a sombra
-    float lightPos[4] = {1.5+glutGUI::lx,1.5+glutGUI::ly,1.5+glutGUI::lz,pontual};
+    float lightPos[4] = {1.5+glutGUI::lx,1.5+glutGUI::ly,1.5+glutGUI::lz,tipo_luz};
     //GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,pontual);
-    GUI::setLight(0,3,5,4,true,false,false,false,pontual);
+    GUI::setLight(0,3,5,4,true,false,false,false,tipo_luz);
     //desenhando os objetos projetados
     glPushMatrix();
         //matriz p multiplicar tudo por -1
@@ -228,12 +228,66 @@ void displayInner() {
             glutGUI::draw_eixos = aux;
         }
         glEnable(GL_LIGHTING);
+
         //glDisable(GL_LIGHTING);
         //glColor3d(0.0,0.0,0.0);
         //if (drawShadow) desenhaObjetosComSombra();
         //glEnable(GL_LIGHTING);
     glPopMatrix();
     //-------------------sombra-------------------
+}
+
+void sombra_plano_qualquer( GLfloat plano[4], float lightPos[4] ) {
+    bool aux = glutGUI::draw_eixos;
+    glutGUI::draw_eixos = false;
+
+    for (size_t i = 0; i < objetos.size(); i++) {
+        glDisable(GL_LIGHTING);
+        glColor4d(0.0,0.0,0.0, 0.5);
+
+        GLfloat sombra[4][4];
+
+        glPushMatrix();
+            GUI::shadowMatrix(sombra,plano,lightPos);
+            glMultTransposeMatrixf( (GLfloat*)sombra );
+                objetos[index_selecionado]->desenha();
+            glEnable(GL_LIGHTING);
+        glPopMatrix();
+    }
+}
+
+void mostrarSombrasNosPlanos() {
+    float lightPos[4] = {glutGUI::lx,glutGUI::ly,glutGUI::lz,tipo_luz ? 1.0f : 0.0f};
+
+    GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,tipo_luz);
+    GLfloat plano_chao[4] = {0,1,0, -0.001};
+    sombra_plano_qualquer(plano_chao, lightPos);
+
+    // lateral
+    GUI::setColor(1, 0.98, 0.98);
+    glPushMatrix();
+        GUI::drawBox(-5,0,-5, -4.77,5,0);
+    glPopMatrix();
+    GLfloat plano_lateral[4] = {0.63,0,0, 3.00-0.001};
+    sombra_plano_qualquer(plano_lateral, lightPos);
+
+    // frente
+    GUI::setColor(1, 0.98, 0.98);
+    glPushMatrix();
+        GUI::drawBox(-4.77,0,-5, 0,5,-4.77);
+    glPopMatrix();
+    GLfloat plano_frente[4] = {0,0,0.63, 3.00-0.001};
+    sombra_plano_qualquer(plano_frente, lightPos);
+
+    // inclinado
+    GUI::setColor(1, 0.98, 0.98);
+    glPushMatrix();
+        glTranslatef(-4.04,0,-2.5);
+        glRotatef(-45, 0,0,1);
+        GUI::drawQuad(2,5);
+    glPopMatrix();
+    GLfloat plano_inclinado[4] = {0.63,0.63,0, 2.54-0.001};
+    sombra_plano_qualquer(plano_inclinado, lightPos);
 }
 
 void desenha_viewports_gerais() {
@@ -268,6 +322,10 @@ void desenha() {
        displayInner();
     }else {
        desenha_viewports_gerais();
+    }
+
+    if (sombras_planos) {
+        mostrarSombrasNosPlanos();
     }
 
     Aplicar_transformacoes();
@@ -471,6 +529,14 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         if(selecao_iniciada) {
             drawShadow = !drawShadow;
         }
+        break;
+    case '/':
+        // mostra sombras em planos arbitrários(parede, chão, plano inclinado)
+        sombras_planos = !sombras_planos;
+        break;
+    case '-':
+        // Troca entre luz pontual próxima e luz distante
+        tipo_luz = !tipo_luz;
         break;
     case 'b':
         viewports = !viewports;

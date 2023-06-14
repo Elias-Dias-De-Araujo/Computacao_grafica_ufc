@@ -120,8 +120,8 @@ void GUI::displayInit()
     }
 
     if (glutGUI::perspective)
-        glFrustum(-1.5,1.5, -1.5,1.5, 1,15);
-        //gluPerspective(30.,ar,0.1,1000.);
+        //glFrustum(-1.5,1.5, -1.5,1.5, 1,15);
+        gluPerspective(30.,ar,0.1,1000.);
     else
         glOrtho(-orthof*w,orthof*w,-orthof*h,orthof*h,0.0,100.0);
 

@@ -22,14 +22,18 @@ using namespace std;
 int index_selecionado = 0;
 bool selecao_iniciada = false;
 size_t pontoSelecionado = 0;
+//-------------------viewPorts------------------
+bool viewports = false;
+bool scissored = false;
+
 
 //-------------------sombra-------------------
 bool drawShadow = false;
 bool pontual = true;
 float k = 0.0;
-//-------------------sombra-------------------
 
 vector<Objeto*> objetos;
+
 
 void atualizar_arquivo()
 {
@@ -153,7 +157,7 @@ void Aplicar_transformacoes() {
 void displayInner() {
     //GUI::setLight(0,  3,5,4, true,false);//(tecla de apagar, x,y,z , desligar e ligar luz, (false = forte, true = atenuada))
 
-    //GUI::drawOriginAL(5,1);// (tamanho de cada eixo, pontos em cada eixo)
+    GUI::drawOrigin(1); // tamanho de cada eixo
 
     GUI::setColor(0.0118,0.7333,0.5216, 1,true);//(red,green,blue,opacidade,componente_de_reflexão)
 
@@ -232,10 +236,39 @@ void displayInner() {
     //-------------------sombra-------------------
 }
 
+void desenha_viewports_gerais() {
+    GUI::displayInit();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport(0, 0, glutGUI::width/2, glutGUI::height/2);
+    gluLookAt(glutGUI::cam->e.x,glutGUI::cam->e.y,glutGUI::cam->e.z,glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z,glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
+    displayInner();
+
+    glLoadIdentity();
+    glViewport(0, glutGUI::height/2, glutGUI::width/2, glutGUI::height/2);
+    gluLookAt(0,10,0, 0,0,0, 0,0,1);
+    displayInner();
+
+    glLoadIdentity();
+    glViewport(glutGUI::width/2, 0, glutGUI::width/2, glutGUI::height/2);
+    gluLookAt(0,1,-10, 0,1,0, 0,1,0);
+    displayInner();
+
+    glLoadIdentity();
+    glViewport(glutGUI::width/2, glutGUI::height/2, glutGUI::width/2, glutGUI::height/2);
+    gluLookAt(10,1,0, 0,1,0, 0,1,0);
+    displayInner();
+}
+
 void desenha() {
     GUI::displayInit();
 
-    displayInner();
+    if(!viewports){
+       displayInner();
+    }else {
+       desenha_viewports_gerais();
+    }
 
     Aplicar_transformacoes();
 
@@ -385,34 +418,6 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
             }
 
         }
-
-        break;
-    case 'O':
-        // inicia a seleção, e o primeiro objeto do vetor passa a ser selecionado
-        selecao_iniciada = !selecao_iniciada;
-        objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
-        break;
-    case 'n':
-        if(selecao_iniciada) {
-            objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado; // remove a seleção do atual
-            index_selecionado++; // incrementa o index para o seguinte
-            // caso tenha ultrapassado o último index ele retorna para o ínicial
-            if(index_selecionado == objetos.size()){
-                index_selecionado = 0;
-            }
-            objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
-        }
-        break;
-    case 'b':
-        if(selecao_iniciada) {
-            objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
-            index_selecionado--;
-            // caso tenha regredido do primeiro index ele vai para o index final
-            if(index_selecionado == -1){
-                index_selecionado = objetos.size() - 1;
-            }
-            objetos[index_selecionado]->selecionado = !objetos[index_selecionado]->selecionado;
-        }
         break;
     case 'v':
         if(selecao_iniciada) {
@@ -424,6 +429,9 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         if(selecao_iniciada) {
             drawShadow = !drawShadow;
         }
+        break;
+    case 'b':
+        viewports = !viewports;
         break;
     default:
         break;

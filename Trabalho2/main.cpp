@@ -166,9 +166,6 @@ void displayInner() {
         glTranslated(0.0,k,0.0); //glTranslated(0.0,k-0.001,0.0);
         GUI::drawFloor(10,10,0.1,0.1);//(largura, comprimento, vertices largura, vertices comprimento)
 
-        //GUI::drawPlane(Vetor3D(2,2,3), k, 15, 15, 0.5, 0.5); //chama o drawFloor dentro //-0.001 definido dentro do drawFloor
-        //GUI::drawPlane(Vetor3D(0,0,1), k, 15, 15, 0.5, 0.5);
-        //GUI::drawPlane(Vetor3D(0,1,0), k, 15, 15, 0.5, 0.5);
         //-------------------sombra-------------------
     glPopMatrix();
 
@@ -185,38 +182,9 @@ void displayInner() {
     GUI::setLight(0,3,5,4,true,false,false,false,tipo_luz);
     //desenhando os objetos projetados
     glPushMatrix();
-        //matriz p multiplicar tudo por -1
-            //float neg[16] = {
-            //                   -1.0, 0.0, 0.0, 0.0,
-            //                    0.0,-1.0, 0.0, 0.0,
-            //                    0.0, 0.0,-1.0, 0.0,
-            //                    0.0, 0.0, 0.0,-1.0
-            //                };
-            //glMultTransposeMatrixf( neg );
-        //matriz de projecao para gerar sombra no plano y=k
             GLfloat sombra[4][4];
             GUI::shadowMatrixYk(sombra,lightPos,k);
-            //GLfloat plano[4] = {0,1,0,-k};
-            //GUI::shadowMatrix(sombra,plano,lightPos);
             glMultTransposeMatrixf( (GLfloat*)sombra );
-
-        //matriz de projecao para gerar sombra no plano y=k
-            //GLfloat sombra[4][4];
-            //GUI::shadowMatrixYk(sombra,lightPos,k);
-            //GLfloat plano[4] = {0,1,0,-k};
-            //GLfloat plano[4] = {0,0,1,-k};
-            //GLfloat plano[4] = {1,1,0,-k};
-            //GLfloat plano[4] = {sqrt(2)/2.,sqrt(2)/2.,0,-k}; //      2/4 + 2/4 + 0 = 1
-            //versao plano arbitrario passando coeficiente D do plano (não intuitivo p usuario - diferente de acordo com o tamanho do n)
-            //GLfloat plano[4] = {2,2,3,-k}; //D = -k
-            //GUI::shadowMatrix(sombra,plano,lightPos);
-            //versao plano arbitrario passando dist minima do plano para a origem (mais intuitivo p usuario)
-            //GLfloat distMin = k; //sinal indica se a distancia é no sentido da normal ou contrário
-            //GUI::shadowMatrix(sombra, Vetor3D(2,2,3), distMin, lightPos);
-            //glMultTransposeMatrixf( (GLfloat*)sombra );
-
-
-
         glDisable(GL_LIGHTING);
         glColor3d(0.0,0.0,0.0);
         if (drawShadow) {
@@ -227,12 +195,8 @@ void displayInner() {
                 glPopMatrix();
             glutGUI::draw_eixos = aux;
         }
-        glEnable(GL_LIGHTING);
 
-        //glDisable(GL_LIGHTING);
-        //glColor3d(0.0,0.0,0.0);
-        //if (drawShadow) desenhaObjetosComSombra();
-        //glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);
     glPopMatrix();
     //-------------------sombra-------------------
 }
@@ -243,7 +207,7 @@ void sombra_plano_qualquer( GLfloat plano[4], float lightPos[4] ) {
 
     for (size_t i = 0; i < objetos.size(); i++) {
         glDisable(GL_LIGHTING);
-        glColor4d(0.0,0.0,0.0, 0.5);
+        glColor3d(0.0,0.0,0.0);
 
         GLfloat sombra[4][4];
 
@@ -256,7 +220,7 @@ void sombra_plano_qualquer( GLfloat plano[4], float lightPos[4] ) {
     }
 }
 
-void mostrarSombrasNosPlanos() {
+void sombraPlano() {
     float lightPos[4] = {glutGUI::lx,glutGUI::ly,glutGUI::lz,tipo_luz ? 1.0f : 0.0f};
 
     GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,tipo_luz);
@@ -268,7 +232,7 @@ void mostrarSombrasNosPlanos() {
     glPushMatrix();
         GUI::drawBox(-5,0,-5, -4.77,5,0);
     glPopMatrix();
-    GLfloat plano_lateral[4] = {0.63,0,0, 3.00-0.001};
+    GLfloat plano_lateral[4] = {1,0,0, 4.77-0.001};
     sombra_plano_qualquer(plano_lateral, lightPos);
 
     // frente
@@ -276,17 +240,17 @@ void mostrarSombrasNosPlanos() {
     glPushMatrix();
         GUI::drawBox(-4.77,0,-5, 0,5,-4.77);
     glPopMatrix();
-    GLfloat plano_frente[4] = {0,0,0.63, 3.00-0.001};
+    GLfloat plano_frente[4] = {0,0,1, 4.77-0.001};
     sombra_plano_qualquer(plano_frente, lightPos);
 
     // inclinado
     GUI::setColor(1, 0.98, 0.98);
     glPushMatrix();
-        glTranslatef(-4.04,0,-2.5);
+        glTranslatef(-4.2,0,-2.5);
         glRotatef(-45, 0,0,1);
         GUI::drawQuad(2,5);
     glPopMatrix();
-    GLfloat plano_inclinado[4] = {0.63,0.63,0, 2.54-0.001};
+    GLfloat plano_inclinado[4] = {1,1,0, 4.2-0.001};
     sombra_plano_qualquer(plano_inclinado, lightPos);
 }
 
@@ -325,7 +289,7 @@ void desenha() {
     }
 
     if (sombras_planos) {
-        mostrarSombrasNosPlanos();
+        sombraPlano();
     }
 
     Aplicar_transformacoes();
@@ -373,8 +337,8 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case '!':
         // Perpectiva: 1 ponto de fuga
-        glutGUI::cam->e.x = 1.5;
-        glutGUI::cam->e.y = -0.25;
+        glutGUI::cam->e.x = 0.75;
+        glutGUI::cam->e.y = 0.30;
         glutGUI::cam->e.z = 0;
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 1;
@@ -385,9 +349,9 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case '@':
         // Perpectiva: 2 pontos de fuga
-        glutGUI::cam->e.x = 1.25;
-        glutGUI::cam->e.y = 0.5;
-        glutGUI::cam->e.z = -1.25;
+        glutGUI::cam->e.x = 0.75;
+        glutGUI::cam->e.y = 0.30;
+        glutGUI::cam->e.z = 0.5;
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 1;
         glutGUI::cam->c.z = 0;
@@ -397,9 +361,9 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
         break;
     case '#':
         // Perpectiva: 3 pontos de fuga
-        glutGUI::cam->e.x = 1.5;
-        glutGUI::cam->e.y = -0.25;
-        glutGUI::cam->e.z = 1.5;
+        glutGUI::cam->e.x = 0.60;
+        glutGUI::cam->e.y = 0.45;
+        glutGUI::cam->e.z = 0.5;
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 1;
         glutGUI::cam->c.z = 0;
@@ -446,7 +410,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
     case '*':
         // Ortográfica(axonométrica): Isométrica
         glutGUI::cam->e.x = 3;
-        glutGUI::cam->e.y = 2;
+        glutGUI::cam->e.y = 3;
         glutGUI::cam->e.z = 3;
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 1;
@@ -458,7 +422,7 @@ void teclado( unsigned char tecla, int mouseX, int mouseY ) {
     case '(':
         // Ortográfica(axonométrica): Dimétrica
         glutGUI::cam->e.x = 3;
-        glutGUI::cam->e.y = 1;
+        glutGUI::cam->e.y = 1.5;
         glutGUI::cam->e.z = 3;
         glutGUI::cam->c.x = 0;
         glutGUI::cam->c.y = 1;
